@@ -48,6 +48,12 @@ namespace PE_Lists_of_Objects
         // Constructors
         //-----------------------------
 
+        /// <summary>
+        /// Parameterized constructor that takes the students name, major, and year
+        /// </summary>
+        /// <param name="name"> takes in a string </param>
+        /// <param name="major"> takes in a string </param>
+        /// <param name="year"> takes in an int </param>
         public Student(string name, string major, int year)
         {
             this.name = name;
@@ -58,5 +64,10 @@ namespace PE_Lists_of_Objects
         //-----------------------------
         // Methods
         //-----------------------------
+
+        public override string ToString()
+        {
+            return $"{name} - Year {year} - {major}";
+        }
     }
 }
