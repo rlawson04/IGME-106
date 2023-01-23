@@ -55,10 +55,10 @@ namespace PE_Lists_of_Objects
         //-----------------------------
 
         /// <summary>
-        /// 
+        /// Searches the list of students given their name
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name"> takes in the name of a student object </param>
+        /// <returns> a student with the matching name from the list or null </returns>
         public Student SearchByName(string name)
         {
             for (int i = 0; i < students.Count; i++)
@@ -69,9 +69,57 @@ namespace PE_Lists_of_Objects
                     return students[i];
                 }
             }
-
             return null;
+        }
+        
+        /// <summary>
+        /// Adds the student to the list and prints confirmation
+        /// unless student already exists
+        /// <summary>
+        /// <param s="s"> takes in a student object </param>
+        public void AddStudent(Student s)
+        {
+            if (!students.Contains(s))
+            { 
+                students.Add(s);
+                Console.WriteLine($"Added {s} to the {name} roster.")
+            }
+        }
 
+        
+        public string AddStudent()
+        {
+            Console.Write("What is the student's name? ")
+            string newName = Console.ReadLine();
+
+            Console.Write("What is the student's major? ")
+            string newMajor = Console.ReadLine();
+
+            Console.Write("What is the student's year? ")
+            int newYear = int.Parse(Console.ReadLine());
+
+            Student newS = new Student(newName, newMajor, newYear);
+
+            if (!students.Contains(newS))
+            {
+                students.Add(newS);
+                return $"{newName} was added to the {name} roster."
+            }
+            else
+            {
+                return $"{newName} is already in the {name} roster."
+            }
+        }
+
+        
+        public void DisplayRoster()
+        {
+            Console.WriteLine($"{name} has {students.Count()} students:");
+
+            for (int i = 0; i < students.Count; i++)
+            {
+                Console.WriteLine(students[i].ToString());
+            }
         }
     }
 }
