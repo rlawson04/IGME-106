@@ -73,29 +73,28 @@ namespace PE_Lists_of_Objects
         }
         
         /// <summary>
-        /// Adds the student to the list and prints confirmation
-        /// unless student already exists
-        /// <summary>
-        /// <param s="s"> takes in a student object </param>
+        /// Adds the student to the list of students if it is not already in it
+        /// </summary>
+        /// <param name="s"> takes a student object </param>
         public void AddStudent(Student s)
         {
             if (!students.Contains(s))
             { 
                 students.Add(s);
-                Console.WriteLine($"Added {s} to the {name} roster.")
+                Console.WriteLine($"Added {s} to the {name} roster.");
             }
         }
 
         
         public string AddStudent()
         {
-            Console.Write("What is the student's name? ")
+            Console.Write("What is the student's name? ");
             string newName = Console.ReadLine();
 
-            Console.Write("What is the student's major? ")
+            Console.Write("What is the student's major? ");
             string newMajor = Console.ReadLine();
 
-            Console.Write("What is the student's year? ")
+            Console.Write("What is the student's year? ");
             int newYear = int.Parse(Console.ReadLine());
 
             Student newS = new Student(newName, newMajor, newYear);
@@ -103,15 +102,17 @@ namespace PE_Lists_of_Objects
             if (!students.Contains(newS))
             {
                 students.Add(newS);
-                return $"{newName} was added to the {name} roster."
+                return $"{newName} was added to the {name} roster.";
             }
             else
             {
-                return $"{newName} is already in the {name} roster."
+                return $"{newName} is already in the {name} roster.";
             }
         }
 
-        
+        /// <summary>
+        /// Prints out all students on the roster along with their information
+        /// </summary>
         public void DisplayRoster()
         {
             Console.WriteLine($"{name} has {students.Count()} students:");

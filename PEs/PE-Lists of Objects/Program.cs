@@ -9,15 +9,41 @@
 
             List<Student> students = new List<Student>();
 
-            Roster roster = new Roster("All Students", students);
+            Roster allStudents = new Roster("All Students", students);
+            Roster freshman = new Roster("Freshmen", students);
 
-            roster.DisplayRoster();
+            string userChoice = " ";
 
-            roster.Add(shiro);
+            while (userChoice != "4")
+            {
+                Console.Write("Choose 1 of the following options:" +
+                    "\n1 - Add a student " +
+                    "\n2 - Change major for a student" +
+                    "\n3 - Print the rosters" +
+                    "\n4 - Quit" +
+                    "\n>");
+                userChoice = Console.ReadLine();
 
-            roster.DistplayRoster();
+                switch (userChoice)
+                {
+                    case "1":
 
-            roster.SearchByName("shiro");
+                        break;
+
+                    case "2":
+
+                        break;
+
+                    case "3":
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            Console.WriteLine("Goodbye!");
         }
     }
 }
