@@ -26,18 +26,22 @@
 
                 switch (userChoice)
                 {
+                    // Add a student
                     case "1":
 
                         break;
 
+                    // Change major
                     case "2":
 
                         break;
 
+                    // Print roster
                     case "3":
 
                         break;
 
+                    // Quit
                     default:
                         break;
                 }
