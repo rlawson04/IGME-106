@@ -4,18 +4,19 @@
     {
         static void Main(string[] args)
         {
-            Student shiro = new Student("shiro", "GDD", 1);
-            Console.WriteLine(shiro.ToString());
-
+            // Create lists of students for the rosters
             List<Student> students = new List<Student>();
-
+            List<Student> students2 = new List<Student>();
             Roster allStudents = new Roster("All Students", students);
-            Roster freshman = new Roster("Freshmen", students);
+            Roster freshman = new Roster("Freshmen", students2);
 
+            // Variable to keep track of the user's input 
             string userChoice = " ";
 
+            // Main loop of the program
             while (userChoice != "4")
             {
+                // Prompt for user with options formatted to look like a menu
                 Console.Write("Choose 1 of the following options:" +
                     "\n1 - Add a student " +
                     "\n2 - Change major for a student" +
@@ -51,10 +52,17 @@
                         // Creates instance of the student to change their major
                         Student searchedStudent = allStudents.SearchByName(userSearch);
 
-                        Console.Write("What would you like to change it to? ");
-                        string userMajor = Console.ReadLine();
-                        searchedStudent.Major = userMajor;
-
+                        if (students.Contains(searchedStudent))
+                        {
+                            Console.WriteLine("Student found: " + searchedStudent.ToString());
+                            Console.Write("What would you like to change it to? ");
+                            string userMajor = Console.ReadLine();
+                            searchedStudent.Major = userMajor;
+                        }
+                        else
+                        {
+                            Console.WriteLine(userSearch + " not found.");
+                        }
                         break;
 
                     // Print roster

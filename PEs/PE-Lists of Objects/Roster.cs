@@ -13,7 +13,7 @@ namespace PE_Lists_of_Objects
         //-----------------------------
 
         private string name;
-        private List<Student> students = new List <Student>();
+        private List<Student> students;
 
         //-----------------------------
         // Properties 
@@ -79,9 +79,13 @@ namespace PE_Lists_of_Objects
         public void AddStudent(Student s)
         {
             if (!students.Contains(s))
-            { 
+            {
                 students.Add(s);
-                Console.WriteLine($"Added {s} to the {name} roster.");
+                Console.WriteLine($"Added {s.Name} to the {name} roster.");
+            }
+            else
+            {
+                Console.WriteLine($"{s.Name} is already in the {name} list.");
             }
         }
 
@@ -102,7 +106,7 @@ namespace PE_Lists_of_Objects
             if (!students.Contains(newS))
             {
                 students.Add(newS);
-                Console.WriteLine($"{newName} was added to the {name} roster.");
+                Console.WriteLine($"added {newName} to the {name} roster.");
             }
             else
             {
