@@ -86,7 +86,7 @@ namespace PE_Lists_of_Objects
         }
 
         
-        public string AddStudent()
+        public Student AddStudent()
         {
             Console.Write("What is the student's name? ");
             string newName = Console.ReadLine();
@@ -102,12 +102,14 @@ namespace PE_Lists_of_Objects
             if (!students.Contains(newS))
             {
                 students.Add(newS);
-                return $"{newName} was added to the {name} roster.";
+                Console.WriteLine($"{newName} was added to the {name} roster.");
             }
             else
             {
-                return $"{newName} is already in the {name} roster.";
+                Console.WriteLine($"{newName} is already in the {name} roster.");   
             }
+
+            return newS;
         }
 
         /// <summary>

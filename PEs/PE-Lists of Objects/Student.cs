@@ -29,11 +29,12 @@ namespace PE_Lists_of_Objects
         }
 
         /// <summary>
-        /// Get only property that gives the student's major
+        /// Get and set property that gives or changes the student's major
         /// </summary>
         public string Major
         {
             get { return major; }
+            set { major = value; }
         }
 
         /// <summary>
