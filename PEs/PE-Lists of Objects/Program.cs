@@ -22,7 +22,7 @@
                     "\n2 - Change major for a student" +
                     "\n3 - Print the rosters" +
                     "\n4 - Quit" +
-                    "\n>");
+                    "\n> ");
                 userChoice = Console.ReadLine();
                 Console.WriteLine();
 

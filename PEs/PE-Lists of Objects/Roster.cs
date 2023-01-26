@@ -61,6 +61,7 @@ namespace PE_Lists_of_Objects
         /// <returns> a student with the matching name from the list or null </returns>
         public Student SearchByName(string name)
         {
+            // Check each student's name to see if they are in the list
             for (int i = 0; i < students.Count; i++)
             {
                 if (name == students[i].Name)
@@ -78,7 +79,8 @@ namespace PE_Lists_of_Objects
         /// <param name="s"> takes a student object </param>
         public void AddStudent(Student s)
         {
-            if (!students.Contains(s))
+            // Check if the student is already in the list
+            if (!students.Contains(SearchByName(s.Name)))
             {
                 students.Add(s);
                 Console.WriteLine($"Added {s.Name} to the {name} roster.");
@@ -89,9 +91,14 @@ namespace PE_Lists_of_Objects
             }
         }
 
-        
+        /// <summary>
+        /// Prompts user to create a new student and at them to the list 
+        /// if they are not already in it
+        /// </summary>
+        /// <returns> A message of success or failure </returns>
         public Student AddStudent()
         {
+            // Prompt user to create new student
             Console.Write("What is the student's name? ");
             string newName = Console.ReadLine();
 
@@ -103,16 +110,19 @@ namespace PE_Lists_of_Objects
 
             Student newS = new Student(newName, newMajor, newYear);
 
-            if (!students.Contains(newS))
+            // Check to see if the student is already in the list
+            if (!students.Contains(SearchByName(newS.Name)))
             {
                 students.Add(newS);
-                Console.WriteLine($"added {newName} to the {name} roster.");
+                Console.WriteLine();
+                Console.WriteLine($"Added {newName} to the {name} roster.");
             }
             else
             {
                 Console.WriteLine($"{newName} is already in the {name} roster.");   
             }
 
+            // returns the newly created student
             return newS;
         }
 
@@ -121,8 +131,10 @@ namespace PE_Lists_of_Objects
         /// </summary>
         public void DisplayRoster()
         {
+            // Print how many students are in roster
             Console.WriteLine($"{name} has {students.Count()} students:");
 
+            // Print each students information
             for (int i = 0; i < students.Count; i++)
             {
                 Console.WriteLine(students[i].ToString());
