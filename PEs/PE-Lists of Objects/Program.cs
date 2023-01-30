@@ -10,6 +10,13 @@
             Roster allStudents = new Roster("All Students", students);
             Roster freshman = new Roster("Freshmen", students2);
 
+            // Make a string for the text file 
+            string fileName = "allstudents.txt";
+
+            // Fill lists with students from the all students text file
+            StreamReader reader = new StreamReader("../../../" + fileName);
+
+
             // Variable to keep track of the user's input 
             string userChoice = " ";
 
