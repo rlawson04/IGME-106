@@ -1,4 +1,6 @@
-﻿namespace PE_Lists_of_Objects
+﻿using System.Reflection.PortableExecutable;
+
+namespace PE_Lists_of_Objects
 {
     internal class Program
     {
@@ -10,25 +12,89 @@
             Roster allStudents = new Roster("All Students", students);
             Roster freshman = new Roster("Freshmen", students2);
 
+            // Lists to split saved data from the txt file into
+            List<string>studentNames = new List<string>();
+            List<string>studentMajors = new List<string>();
+            List<int> studentYears = new List<int>();
+            
             // Make a string for the text file 
-            string fileName = "allstudents.txt";
+            string fileName = "AllStudents.txt";
+
 
             // Fill lists with students from the all students text file
-            StreamReader reader = new StreamReader("../../../" + fileName);
+            using (StreamReader reader = new StreamReader("../../../" + fileName))
+            {
+                string lineOfText = " ";
 
+                // Reads the file until null is found
+                while (lineOfText != null)
+                {
+                    lineOfText = reader.ReadLine();
+
+                    if (lineOfText == null)
+                    {
+                        break;
+                    }
+
+                    // Split data into an array of strings
+                    string[] splitData = lineOfText.Split('-');
+
+                    // Adds all the student's names into the list  
+                    for (int i = 0; i < splitData.Length; i += 3)
+                    {
+                        studentNames.Add(splitData[i]);
+                    }
+
+                    // Adds all the student's names into the list  
+                    for (int j = 2; j < splitData.Length; j += 3)
+                    {
+                        studentMajors.Add(splitData[j]);
+                    }
+
+                    // Adds all the students years into the list 
+                    for (int k = 1; k < splitData.Length; k += 3)
+                    {
+                        string studentYear = splitData[k].Remove(0, 5);
+                        
+                        studentYears.Add(int.Parse(studentYear));
+                    }
+
+                }
+            }
+
+            if (studentYears.Count > 0)
+            {
+                for (int l = 0; l < studentNames.Count; l++)
+                {
+                    Student txtStudent = new Student(studentNames.ElementAt(l),
+                        studentMajors.ElementAt(l), studentYears.ElementAt(l));
+                    if (txtStudent.Year == 1)
+                    {
+                        freshman.AddStudent(txtStudent);
+                        allStudents.AddStudent(txtStudent);
+                    }
+                    else
+                    {
+                        allStudents.AddStudent(txtStudent);
+                    }
+                }
+            }
 
             // Variable to keep track of the user's input 
             string userChoice = " ";
 
+            Console.WriteLine();
+
             // Main loop of the program
-            while (userChoice != "4")
+            while (userChoice != "5")
             {
                 // Prompt for user with options formatted to look like a menu
                 Console.Write("Choose 1 of the following options:" +
                     "\n1 - Add a student " +
                     "\n2 - Change major for a student" +
                     "\n3 - Print the rosters" +
-                    "\n4 - Quit" +
+                    "\n4 - Save" +
+                    "\n5 - Quit" +
                     "\n> ");
                 userChoice = Console.ReadLine();
                 Console.WriteLine();
@@ -78,6 +144,51 @@
                         allStudents.DisplayRoster();
                         Console.WriteLine();
                         freshman.DisplayRoster();
+                        break;
+
+                    case "4":
+                        // Checks if allStudents has members
+                        if (students.Count > 0)
+                        {
+                            // Prompts user if they want to overwrite data
+                            Console.WriteLine("Would you like to overwrite the data?");
+                            string userAnswer = Console.ReadLine().Trim().ToUpper();
+
+                            // Overwrites the data
+                            if (userAnswer == "YES")
+                            {
+                                // Save all the students to a txt file
+                                StreamWriter writer = new StreamWriter("../../../" + fileName);
+
+                                // Overwrites information with all the new names and damages
+                                for (int j = 0; j < students.Count; j++)
+                                {
+                                    writer.WriteLine(students.ElementAt(j));
+                                }
+                                // When done with the file, close it
+                                writer.Close();
+                                Console.WriteLine("Roster saved!");
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            // Save all the students to a txt file
+                            StreamWriter writer = new StreamWriter("../../../" + fileName);
+
+                            // Overwrites information with all the new names and damages
+                            for (int j = 0; j < students.Count; j++)
+                            {
+                                writer.WriteLine(students.ElementAt(j));
+                            }
+                            // When done with the file, close it
+                            writer.Close();
+                            Console.WriteLine("Roster saved!");
+                        }
+                        
                         break;
 
                     // Quit
