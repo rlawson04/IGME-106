@@ -16,8 +16,8 @@ namespace Mono_Game_Basics_PE
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _graphics.PreferredBackBufferWidth = 1000;
-            _graphics.PreferredBackBufferHeight = 5000;
+            _graphics.PreferredBackBufferWidth = 600;
+            _graphics.PreferredBackBufferHeight = 600;
             _graphics.ApplyChanges();
         }
 
@@ -39,9 +39,10 @@ namespace Mono_Game_Basics_PE
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            _position.X = 1.5f;
+            _position.Y = 1.5f;
             // TODO: Add your update logic here
-
+            
             base.Update(gameTime);
         }
 
