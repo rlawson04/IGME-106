@@ -8,25 +8,30 @@ namespace Mono_Game_Basics_PE
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Texture2D _texture;
+        private Vector2 _position;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _graphics.PreferredBackBufferWidth = 1000;
+            _graphics.PreferredBackBufferHeight = 5000;
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            _position = Vector2.Zero;
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            _texture = this.Content.Load<Texture2D>("Dog");
             // TODO: use this.Content to load your game content here
         }
 
@@ -45,6 +50,9 @@ namespace Mono_Game_Basics_PE
             GraphicsDevice.Clear(Color.DarkGoldenrod);
 
             // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_texture, _position, Color.White);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

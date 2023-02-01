@@ -13,3 +13,15 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin png-transparent-adult-black-and-white-american-pit-bull-terrier-dog-puppy-pet-sitting-cat-dogs-animals-carnivoran-pet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:png-transparent-adult-black-and-white-american-pit-bull-terrier-dog-puppy-pet-sitting-cat-dogs-animals-carnivoran-pet.png;Dog.png
+
