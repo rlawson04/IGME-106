@@ -45,11 +45,11 @@ namespace Mono_Game_Basics_PE
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             
-            if (_position.X < _texture.Width / 2)
+            if (_position.X < _texture.Width)
             {
                 _position.X++;
             }
-            if (_position.Y < _texture.Height / 2)
+            if (_position.Y < _texture.Height)
             {
                 _position.Y++;
             }
