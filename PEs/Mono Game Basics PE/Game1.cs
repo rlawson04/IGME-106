@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
 
 namespace Mono_Game_Basics_PE
 {
@@ -10,6 +11,7 @@ namespace Mono_Game_Basics_PE
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;
         private Vector2 _position;
+        private Rectangle _bounds;
 
         public Game1()
         {
@@ -26,12 +28,15 @@ namespace Mono_Game_Basics_PE
             // TODO: Add your initialization logic here
             _position = Vector2.Zero;
             base.Initialize();
+            _bounds = new Rectangle((_graphics.PreferredBackBufferWidth/2 - _texture.Width/4),
+                _graphics.PreferredBackBufferHeight/2 - _texture.Height/4 ,
+                _texture.Width/2, _texture.Height/2);
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _texture = this.Content.Load<Texture2D>("Dog");
+            _texture = this.Content.Load<Texture2D>("Crab");
             // TODO: use this.Content to load your game content here
         }
 
@@ -39,10 +44,21 @@ namespace Mono_Game_Basics_PE
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            _position.X = 1.5f;
-            _position.Y = 1.5f;
-            // TODO: Add your update logic here
             
+            if (_position.X < _texture.Width / 2)
+            {
+                _position.X++;
+            }
+            if (_position.Y < _texture.Height / 2)
+            {
+                _position.Y++;
+            }
+
+            
+                
+            
+            // todo: add your update logic here
+
             base.Update(gameTime);
         }
 
@@ -53,6 +69,7 @@ namespace Mono_Game_Basics_PE
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             _spriteBatch.Draw(_texture, _position, Color.White);
+            _spriteBatch.Draw(_texture, _bounds, Color.AliceBlue);
             _spriteBatch.End();
 
             base.Draw(gameTime);
