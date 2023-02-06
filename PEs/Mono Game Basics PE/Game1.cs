@@ -98,7 +98,7 @@ namespace Mono_Game_Basics_PE
 
             // Creates the two images
             _spriteBatch.Draw(_texture, _position, Color.White);
-            _spriteBatch.Draw(_texture, _bounds, Color.AliceBlue);
+            _spriteBatch.Draw(_texture, _bounds, Color.PowderBlue);
 
             // Creates text describing the location and speed
             _spriteBatch.DrawString(labelFont,
