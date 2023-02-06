@@ -12,20 +12,31 @@ namespace Mono_Game_Basics_PE
         private Texture2D _texture;
         private Vector2 _position;
         private Rectangle _bounds;
+        private bool _hitTest = false;
+        private int _movementSpeed = 1;
+        private SpriteFont labelFont;
+        private SpriteFont bounceFont;
+        private int bounces = 0;
+
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            // Makes mouse visible
             IsMouseVisible = true;
+
+            // Sets screen size
             _graphics.PreferredBackBufferWidth = 600;
             _graphics.PreferredBackBufferHeight = 600;
             _graphics.ApplyChanges();
+
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Sets initial position of the images
             _position = Vector2.Zero;
             base.Initialize();
             _bounds = new Rectangle((_graphics.PreferredBackBufferWidth/2 - _texture.Width/4),
@@ -35,9 +46,12 @@ namespace Mono_Game_Basics_PE
 
         protected override void LoadContent()
         {
+            // Loads the content from the folder
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _texture = this.Content.Load<Texture2D>("Crab");
-            // TODO: use this.Content to load your game content here
+            labelFont = Content.Load<SpriteFont>("labelFont");
+            bounceFont = Content.Load<SpriteFont>("bounceFont");
+            
         }
 
         protected override void Update(GameTime gameTime)
@@ -45,34 +59,106 @@ namespace Mono_Game_Basics_PE
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             
-            if (_position.X < _texture.Width)
+            // Moves the image diagonally until it "hits" the edge of the screen
+            if (_hitTest == false)
             {
                 _position.X++;
-            }
-            if (_position.Y < _texture.Height)
-            {
                 _position.Y++;
+                if (_position.X >= _texture.Width)
+                {
+                    _hitTest = true;
+                    bounces++;
+                }
             }
 
+            // Moves the image diagonally until it "hits" the edge of the screen
+            if (_hitTest == true)
+            {
+                _position.X--;
+                _position.Y--;
+                if (_position.X <= 0)
+                {
+                    _hitTest = false;
+                    bounces++;
+                }
+            }
             
-                
-            
-            // todo: add your update logic here
+            ProcessInput();
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            // Changes the background color
             GraphicsDevice.Clear(Color.DarkGoldenrod);
 
-            // TODO: Add your drawing code here
+            // Starts drawing
             _spriteBatch.Begin();
+
+            // Creates the two images
             _spriteBatch.Draw(_texture, _position, Color.White);
-            _spriteBatch.Draw(_texture, _bounds, Color.AliceBlue);
+            _spriteBatch.Draw(_texture, _bounds, Color.PowderBlue);
+
+            // Creates text describing the location and speed
+            _spriteBatch.DrawString(labelFont,
+                $"Speed: {_movementSpeed} Position :({_bounds.X},{_bounds.Y})",
+                new Vector2(30,30), Color.Black);
+
+            // Creates text keeping track of the number of bounces
+            _spriteBatch.DrawString(bounceFont,
+                $"{bounces}",
+                new Vector2(_position.X, _position.Y), Color.Black);
+
+            // Stops drawing
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Processes keyboard and mouse inputs which affect the images and text
+        /// </summary>
+        private void ProcessInput()
+        {
+            // Two states for the keyboard and mouse
+            KeyboardState state = Keyboard.GetState();
+            MouseState mstate = Mouse.GetState();
+               
+            // Changes movement speed when the space bar is held down
+            if (state.IsKeyDown(Keys.Space))
+            {
+                _movementSpeed++;
+            }
+
+            // Moves the center image based on each of the four inputs
+            if (state.IsKeyDown(Keys.W) == true)
+            {
+                _bounds.Y -= _movementSpeed;
+            }
+            if (state.IsKeyDown(Keys.A) == true)
+            {
+                _bounds.X -= _movementSpeed;
+            }
+            if (state.IsKeyDown(Keys.S) == true)
+            {
+                _bounds.Y += _movementSpeed;
+            }
+            if (state.IsKeyDown(Keys.D) == true)
+            {
+                _bounds.X += _movementSpeed;
+            }
+
+            // Resets image locations, and text when the mouse right button is pressed
+            if (mstate.RightButton == ButtonState.Pressed)
+            {
+                bounces = 0;
+                _movementSpeed = 1;
+                _position.X = 0;
+                _position.Y = 0;
+                _bounds.X = _graphics.PreferredBackBufferWidth / 2 - _texture.Width / 4;
+                _bounds.Y = _graphics.PreferredBackBufferHeight / 2 - _texture.Height / 4;
+            }
         }
     }
 }
