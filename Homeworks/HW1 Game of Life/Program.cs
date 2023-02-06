@@ -45,6 +45,7 @@
             }
 
             Console.WriteLine("Goodbye!");
-        }
+
+        }// End of main
     }
 }
