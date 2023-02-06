@@ -12,6 +12,8 @@ namespace Mono_Game_Basics_PE
         private Texture2D _texture;
         private Vector2 _position;
         private Rectangle _bounds;
+        private bool _hitTest = false;
+        
 
         public Game1()
         {
@@ -21,6 +23,7 @@ namespace Mono_Game_Basics_PE
             _graphics.PreferredBackBufferWidth = 600;
             _graphics.PreferredBackBufferHeight = 600;
             _graphics.ApplyChanges();
+
         }
 
         protected override void Initialize()
@@ -45,19 +48,26 @@ namespace Mono_Game_Basics_PE
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             
-            if (_position.X < _texture.Width)
+            if (_hitTest == false)
             {
                 _position.X++;
-            }
-            if (_position.Y < _texture.Height)
-            {
                 _position.Y++;
+                if (_position.X >= _texture.Width)
+                {
+                    _hitTest = true;
+                }
             }
-
-            
-                
-            
-            // todo: add your update logic here
+            if (_hitTest == true)
+            {
+                _position.X--;
+                _position.Y--;
+                if (_position.X <= 0)
+                {
+                    _hitTest = false;
+                }
+            }
+   
+            ProcessInput();
 
             base.Update(gameTime);
         }
@@ -73,6 +83,28 @@ namespace Mono_Game_Basics_PE
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void ProcessInput()
+        {
+            KeyboardState state = Keyboard.GetState();
+            
+            if (state.IsKeyDown(Keys.W) == true)
+            {
+                _bounds.Y -= 5;
+            }
+            if (state.IsKeyDown(Keys.A) == true)
+            {
+                _bounds.X -= 5;
+            }
+            if (state.IsKeyDown(Keys.S) == true)
+            {
+                _bounds.Y += 5;
+            }
+            if (state.IsKeyDown(Keys.D) == true)
+            {
+                _bounds.X += 5;
+            }
         }
     }
 }
