@@ -26,5 +26,10 @@ namespace HW1_Game_of_Life
         // -------------------------------------
         // Methods
         // -------------------------------------
+
+        public override string ToString()
+        {
+            return "0";
+        }
     }
 }
