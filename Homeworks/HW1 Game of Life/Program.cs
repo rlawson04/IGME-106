@@ -27,16 +27,20 @@
 
                 switch (userInput)
                 {
+                    // Generate a random board
                     case "1":
                         game1.GenerateBoard();
                         break;
 
+                    // Display currently loaded board
                     case "2":
                         game1.DisplayBoard();
                         break;
-
+                    
+                    // Load board from a file
                     case "3":
-                        Console.WriteLine("Will implement load in activity 2.");
+                        Console.WriteLine("Filename?");
+                        game1.FileName = Console.ReadLine();
                         break;
 
                     default:
