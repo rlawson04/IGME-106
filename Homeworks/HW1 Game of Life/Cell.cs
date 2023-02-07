@@ -13,6 +13,8 @@ namespace HW1_Game_of_Life
         // -------------------------------------
 
         private bool isAlive = false;
+        private string alive = "o";
+        private string dead = "x";
 
         // -------------------------------------
         // Properties   
@@ -24,6 +26,16 @@ namespace HW1_Game_of_Life
             set { isAlive = value; }
         }
 
+        public string Alive
+        {
+            get { return alive; }
+            set { alive = value; }
+        }
+        public string Dead
+        {
+            get { return dead; }
+            set { dead = value; }
+        }
         // -------------------------------------
         // Constructors
         // -------------------------------------
@@ -45,11 +57,11 @@ namespace HW1_Game_of_Life
         {
             if (isAlive)
             {
-                return "0";
+                return Alive;
             }
             else
             {
-                return "X";
+                return Dead;
             }
         }
     }

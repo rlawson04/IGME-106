@@ -35,12 +35,30 @@
                     // Display currently loaded board
                     case "2":
                         game1.DisplayBoard();
+                        Console.Write("1-Advance\n" +
+                            "2-save current board\n" +
+                            "3-main menu?");
+                        string subChoice = Console.ReadLine();
+
+                        switch (subChoice)
+                        {
+                            // ADVANCE IN ACTIVITY 3
+                            case "1":
+                                break;
+
+                            // Save the current board to a file
+                            case "2":
+                                break;
+
+                            default:
+                                break;
+                        }
                         break;
                     
                     // Load board from a file
                     case "3":
-                        Console.WriteLine("Filename?");
-                        game1.FileName = Console.ReadLine();
+                        Console.Write("Filename? "); 
+                        game1.LoadBoard(Console.ReadLine());
                         break;
 
                     default:
