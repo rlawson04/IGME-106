@@ -35,23 +35,33 @@
                     // Display currently loaded board
                     case "2":
                         game1.DisplayBoard();
-                        Console.Write("1-Advance\n" +
-                            "2-save current board\n" +
-                            "3-main menu?");
-                        string subChoice = Console.ReadLine();
+                        string subChoice = " ";
 
-                        switch (subChoice)
+                        while (subChoice != "3")
                         {
-                            // ADVANCE IN ACTIVITY 3
-                            case "1":
-                                break;
+                            Console.Write("1-Advance\n" +
+                            "2-save current board\n" +
+                            "3-main menu?\n\n" +
+                            "Your choice: ");
+                            subChoice = Console.ReadLine();
 
-                            // Save the current board to a file
-                            case "2":
-                                break;
+                            switch (subChoice)
+                            {
+                                // ADVANCE IN ACTIVITY 3
+                                case "1":
+                                    Console.WriteLine("ADVANCE WILL BE HERE");
+                                    break;
 
-                            default:
-                                break;
+                                // Save the current board to a file
+                                case "2":
+                                    Console.Write("Filename? ");
+                                    game1.SaveGame(Console.ReadLine());
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            Console.WriteLine();
                         }
                         break;
                     
