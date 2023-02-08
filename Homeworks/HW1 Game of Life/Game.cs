@@ -181,11 +181,29 @@ namespace HW1_Game_of_Life
 
         }
 
-        public void SaveGame()
+        public void SaveGame(string saveFile)
         {
-            StreamWriter writer = new StreamWriter("../../../savedgameboard.txt");
+            StreamWriter writer = new StreamWriter("../../../" + saveFile);
             writer.WriteLine(gameBoard.GetLength(0) + "," + gameBoard.GetLength(1));
-            writer.WriteLine();
+            
+            if (gameBoard[0,0] == "o" || gameBoard[0, 0] == "@" )
+            {
+                writer.WriteLine(gameBoard[0, 0]);
+            }
+
+            int length = 0;
+            int width = 0;
+            if (gameBoard[length, width] != "x" || gameBoard[length, width] != "-")
+            {
+                length++;
+                width++;
+            }
+            else
+            {
+
+            }
+
+
             for (int i = 0; i < gameBoard.GetLength(0); i++)
             {
                 for(int j = 0; j < gameBoard.GetLength(1); j++)
