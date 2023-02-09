@@ -13,8 +13,8 @@ namespace HW1_Game_of_Life
         // -------------------------------------
 
         private bool isAlive = false;
-        private string alive = "o";
-        private string dead = "x";
+        private string alive = "@";
+        private string dead = "-";
 
         // -------------------------------------
         // Properties   
@@ -50,18 +50,18 @@ namespace HW1_Game_of_Life
         // -------------------------------------
 
         /// <summary>
-        /// Overrides the toString method, returning a 0 character 
+        /// Overrides the toString method, returning a @ or - character 
         /// </summary>
-        /// <returns> a string containing the 0 character </returns>
+        /// <returns> a string containing the @ or - character </returns>
         public override string ToString()
         {
             if (isAlive)
             {
-                return Alive;
+                return alive;
             }
             else
             {
-                return Dead;
+                return dead;
             }
         }
     }

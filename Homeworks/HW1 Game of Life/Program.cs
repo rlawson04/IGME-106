@@ -49,7 +49,9 @@
                             {
                                 // ADVANCE IN ACTIVITY 3
                                 case "1":
-                                    Console.WriteLine("ADVANCE WILL BE HERE");
+                                    game1.Advance();
+                                    Console.WriteLine("Advancement complete\n");
+                                    game1.DisplayBoard();
                                     break;
 
                                 // Save the current board to a file

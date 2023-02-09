@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +19,7 @@ namespace HW1_Game_of_Life
         private Cell[,] gameBoard2;
         private Random rng = new Random();
         private string fileName;
+        private Cell[,] paddedBoard;
 
         // -------------------------------------
         // Properties   
@@ -67,7 +70,7 @@ namespace HW1_Game_of_Life
 
             // Creates new 2d array of the same length
             gameBoard2 = new Cell[gameBoard.GetLength(0), gameBoard.GetLength(1)];
-            
+
             // Copies data into the array as a non shallow copy
             Array.Copy(gameBoard, gameBoard2, gameBoard.Length);
 
@@ -187,6 +190,11 @@ namespace HW1_Game_of_Life
                 Console.WriteLine(ex.Message);
             }
 
+            gameBoard2 = gameBoard;
+
+            // Copies data into the array as a non shallow copy
+            Array.Copy(gameBoard, gameBoard2, gameBoard.Length);
+
             // Print confirmation that the game board loaded correctly
             Console.WriteLine("Game board loaded");
 
@@ -215,35 +223,93 @@ namespace HW1_Game_of_Life
             writer.Close();
         }
 
+        
+        public void Advance()
+        {
+            paddedBoard = new Cell[(gameBoard.GetLength(0) + 2), (gameBoard.GetLength(1) + 2)];
+
+            for (int i = 0; i < paddedBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < paddedBoard.GetLength(1); j++)
+                {
+                    paddedBoard[i, j] = new Cell(false);
+                }
+            }
+
+            for (int i = 0; i < gameBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < gameBoard.GetLength(1); j++)
+                {
+                    paddedBoard[i + 1, j + 1] = gameBoard[i,j];
+                }
+            }
+
+            for (int i = 0; i < gameBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < gameBoard.GetLength(1); j++)
+                {
+                    gameBoard2[i, j] = UpdateLogic(i, j);
+                }
+            }
+        }
+
         // TODO: Analyze the cells by looking at their neighbors
         // Live cell with fewer than two live neighbors dies
         // Live cell with two or three living neighbors lives
         // Live cell with more than three living neighbors dies
         // Dead cell with three live neighbors lives
-        public void Advance()
+        public Cell UpdateLogic(int i, int j)
         {
-            foreach (Cell c in gameBoard)
+            int aliveCount = 0;
+
+            Cell update = new Cell(false);
+
+            for (int k = (i-1); k < (i+2); k++)
             {
-                
-            }
-        }
+                for (int l = (j-1); l < (j+2); l++)
+                {
+                    if (paddedBoard[k+1, l+1].IsAlive == true)
+                    {
+                        aliveCount++;
+                        update.IsAlive = true;
+                    }
+                }
+            }  
 
-        public int liveNeighbors()
-        {
-            int liveNeighbors = 0;
-            foreach (Cell c in gameBoard)
+            switch (aliveCount)
             {
-                if (c.IsAlive == true)
-                {
-                    
-                }
-                else
-                {
+                case 0:
+                    update.IsAlive = false;
+                    break;
 
-                }
+                case 1:                   
+                    update.IsAlive = false;
+                    break;
+
+                case 2:
+                    if (update.IsAlive == false)
+                    {
+                        update.IsAlive = false;
+                    }
+                    else
+                    {
+                        update.IsAlive = true;
+                    }
+                    break;
+
+                case 3:
+                    if (update.IsAlive == false)
+                    {
+                        update.IsAlive = true;
+                    }                   
+                    break;
+
+                default:
+                    update.IsAlive = false;
+                    break;
             }
 
-            return liveNeighbors;
+            return update;
         }
     } // End of class
 }
