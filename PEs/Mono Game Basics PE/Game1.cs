@@ -5,8 +5,15 @@ using System.Threading;
 
 namespace Mono_Game_Basics_PE
 {
+    enum GameStates
+    {
+        MainMenu,
+        Bounce,
+        UserControl
+    }
     public class Game1 : Game
     {
+        private GameStates currentState = GameStates.MainMenu;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;
@@ -58,6 +65,28 @@ namespace Mono_Game_Basics_PE
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            // Get current device states
+            KeyboardState kbState = Keyboard.GetState();
+            MouseState mState = Mouse.GetState();
+
+            // Changes the current state by calling the methods created below
+            switch(currentState)
+            {
+                case GameStates.MainMenu:
+                    ProcessMainMenu(kbState);
+                    break;
+                case GameStates.Bounce:
+                    ProcessBounceMode(kbState, mState);
+                    break;
+                case GameStates.UserControl:
+                    ProcessUserMode(kbState, mState);
+                    break;
+                default:
+                    break;
+            
+            }
+
             
             // Moves the image diagonally until it "hits" the edge of the screen
             if (_hitTest == false)
@@ -96,20 +125,45 @@ namespace Mono_Game_Basics_PE
             // Starts drawing
             _spriteBatch.Begin();
 
-            // Creates the two images
-            _spriteBatch.Draw(_texture, _position, Color.White);
-            _spriteBatch.Draw(_texture, _bounds, Color.PowderBlue);
+            switch (currentState)
+            {
+                case GameStates.MainMenu:
+                    _spriteBatch.DrawString(bounceFont,
+                        "Welcome to Reilly's MonoGame demo\n" +
+                        "Press B to see some bouncing.\n" +
+                        "Press U to control the image yourself.",
+                        new Vector2(10, 500), Color.Black);
+                    break;
 
-            // Creates text describing the location and speed
-            _spriteBatch.DrawString(labelFont,
-                $"Speed: {_movementSpeed} Position :({_bounds.X},{_bounds.Y})",
-                new Vector2(30,30), Color.Black);
+                case GameStates.Bounce:
+                    _spriteBatch.Draw(_texture, _position, Color.White);
 
-            // Creates text keeping track of the number of bounces
-            _spriteBatch.DrawString(bounceFont,
-                $"{bounces}",
-                new Vector2(_position.X, _position.Y), Color.Black);
+                    // Creates text keeping track of the number of bounces
+                    _spriteBatch.DrawString(bounceFont,
+                        $"{bounces}",
+                        new Vector2(_bounds.X, _bounds.Y), Color.Black);
 
+                    _spriteBatch.DrawString(bounceFont,
+                        "Press M to go back to the main menu.\n" +
+                        "Click the right mouse button to reset.",
+                        new Vector2(10,500), Color.Black);
+                    break;
+
+                case GameStates.UserControl:
+                    _spriteBatch.Draw(_texture, _bounds, Color.PowderBlue);
+
+                    // Creates text describing the location and speed
+                    _spriteBatch.DrawString(labelFont,
+                        $"Speed: {_movementSpeed} Position :({_bounds.X},{_bounds.Y})",
+                        new Vector2(30, 30), Color.Black);
+
+                    _spriteBatch.DrawString(bounceFont,
+                        "Press M to go back to the main menu.\n" +
+                        "Click the right mouse button to reset.",
+                        new Vector2(10, 500), Color.Black);
+                    break;
+            }
+            
             // Stops drawing
             _spriteBatch.End();
 
@@ -149,8 +203,64 @@ namespace Mono_Game_Basics_PE
                 _bounds.X += _movementSpeed;
             }
 
+            
+            
+        }
+
+        /// <summary>
+        /// Checks if "U" or "B" is being pressed and then changes the game state
+        /// </summary>
+        /// <param name="kbState"></param>
+        private void ProcessMainMenu(KeyboardState kbState)
+        {
+            if (kbState.IsKeyDown (Keys.B))
+            {
+                currentState = GameStates.Bounce;
+            }
+            else if (kbState.IsKeyDown (Keys.U))
+            {
+                currentState = GameStates.UserControl;
+            }
+        }
+
+        /// <summary>
+        /// Checks if "M" is being pressed and then changes the game state
+        /// </summary>
+        /// <param name="kbState"> the current keyboard state </param>
+        /// <param name="mState"> the current mouse state </param>
+        private void ProcessBounceMode(KeyboardState kbState, MouseState mState)
+        {
+            if (kbState.IsKeyDown(Keys.M))
+            {
+                currentState = GameStates.MainMenu;
+            }
+
             // Resets image locations, and text when the mouse right button is pressed
-            if (mstate.RightButton == ButtonState.Pressed)
+            if (mState.RightButton == ButtonState.Pressed)
+            {
+                bounces = 0;
+                _movementSpeed = 1;
+                _position.X = 0;
+                _position.Y = 0;
+                _bounds.X = _graphics.PreferredBackBufferWidth / 2 - _texture.Width / 4;
+                _bounds.Y = _graphics.PreferredBackBufferHeight / 2 - _texture.Height / 4;
+            }
+        }
+
+        /// <summary>
+        /// Checks if "M" is being pressed and then changes the game state
+        /// </summary>
+        /// <param name="kbState"> the current keyboard state </param>
+        /// <param name="mState"> the current mouse state </param>
+        private void ProcessUserMode(KeyboardState kbState, MouseState mState)
+        {
+            if (kbState.IsKeyDown(Keys.M))
+            {
+                currentState = GameStates.MainMenu;
+            }
+
+            // Resets image locations, and text when the mouse right button is pressed
+            if (mState.RightButton == ButtonState.Pressed)
             {
                 bounces = 0;
                 _movementSpeed = 1;
