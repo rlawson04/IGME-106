@@ -222,7 +222,10 @@ namespace HW1_Game_of_Life
         // Dead cell with three live neighbors lives
         public void Advance()
         {
-
+            foreach (Cell c in gameBoard)
+            {
+                
+            }
         }
 
         public int liveNeighbors()
@@ -232,7 +235,7 @@ namespace HW1_Game_of_Life
             {
                 if (c.IsAlive == true)
                 {
-
+                    
                 }
                 else
                 {
