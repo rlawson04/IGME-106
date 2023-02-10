@@ -25,6 +25,10 @@ namespace HW1_Game_of_Life
         // Properties   
         // -------------------------------------
         
+        /// <summary>
+        /// Get - Set property that allows the user to change
+        /// the file name from outside the class
+        /// </summary>
         public string FileName
         {
             get { return fileName; }
@@ -223,9 +227,12 @@ namespace HW1_Game_of_Life
             writer.Close();
         }
 
-        
+        /// <summary>
+        /// Creates an outer board to check through each cell in the game board
+        /// </summary>
         public void Advance()
         {
+            // Outside array to not cause an index error
             paddedBoard = new Cell[(gameBoard.GetLength(0) + 2), (gameBoard.GetLength(1) + 2)];
 
             for (int i = 0; i < paddedBoard.GetLength(0); i++)
@@ -236,6 +243,7 @@ namespace HW1_Game_of_Life
                 }
             }
 
+            // Populate the outside array
             for (int i = 0; i < gameBoard.GetLength(0); i++)
             {
                 for (int j = 0; j < gameBoard.GetLength(1); j++)
@@ -244,6 +252,7 @@ namespace HW1_Game_of_Life
                 }
             }
 
+            // Advances the cells based on the rules below
             for (int i = 0; i < gameBoard.GetLength(0); i++)
             {
                 for (int j = 0; j < gameBoard.GetLength(1); j++)
@@ -253,17 +262,30 @@ namespace HW1_Game_of_Life
             }
         }
 
-        // TODO: Analyze the cells by looking at their neighbors
+        // RULES FOR THE CELLS:
         // Live cell with fewer than two live neighbors dies
         // Live cell with two or three living neighbors lives
         // Live cell with more than three living neighbors dies
         // Dead cell with three live neighbors lives
+
+
+        /// <summary>
+        /// Iterates through the game board to create a new logic for each cell
+        /// based on the rules above
+        /// </summary>
+        /// <param name="i"> an int from the nested for loop </param>
+        /// <param name="j"> an int from the nested for loop </param>
+        /// <returns> A cell object thta is either alive or dead 
+        /// based on the rules</returns>
         public Cell UpdateLogic(int i, int j)
         {
+            // Counter to keep track of how many live cells are around the given cell
             int aliveCount = 0;
 
+            // Creates new cell which will be returned at the end
             Cell update = new Cell(false);
 
+            // Checks the given cell and determines if it is alive
             for (int k = (i-1); k < (i+2); k++)
             {
                 for (int l = (j-1); l < (j+2); l++)
@@ -276,7 +298,8 @@ namespace HW1_Game_of_Life
                 }
             }  
 
-            switch (aliveCount)
+            // Uses the rules above to figure out if the cell becomes alive or dead
+            switch (aliveCount - 1)
             {
                 case 0:
                     update.IsAlive = false;
@@ -309,6 +332,7 @@ namespace HW1_Game_of_Life
                     break;
             }
 
+            // returns the updated cell
             return update;
         }
     } // End of class

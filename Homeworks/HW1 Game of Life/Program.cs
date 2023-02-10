@@ -45,9 +45,10 @@
                             "Your choice: ");
                             subChoice = Console.ReadLine();
 
+                            // Sub menu switch statement
                             switch (subChoice)
                             {
-                                // ADVANCE IN ACTIVITY 3
+                                // Uses the advance method to generate a new board
                                 case "1":
                                     game1.Advance();
                                     Console.WriteLine("Advancement complete\n");

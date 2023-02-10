@@ -20,17 +20,27 @@ namespace HW1_Game_of_Life
         // Properties   
         // -------------------------------------
 
+        /// <summary>
+        /// Get - set property to determine if the cell is alive or not
+        /// </summary>
         public bool IsAlive
         {
             get { return isAlive; }
             set { isAlive = value; }
         }
 
+        /// <summary>
+        /// Get - set property to determine if the cell is alive 
+        /// </summary>
         public string Alive
         {
             get { return alive; }
             set { alive = value; }
         }
+
+        /// <summary>
+        /// Get - set property to determine if the cell is dead
+        /// </summary>
         public string Dead
         {
             get { return dead; }
@@ -40,6 +50,10 @@ namespace HW1_Game_of_Life
         // Constructors
         // -------------------------------------
 
+        /// <summary>
+        /// Basic constructor for the cell class to have a dead or alive value
+        /// </summary>
+        /// <param name="isAlive"> a bool to determine if the cell is alive </param>
         public Cell (bool isAlive)
         {
             this.isAlive = isAlive;
