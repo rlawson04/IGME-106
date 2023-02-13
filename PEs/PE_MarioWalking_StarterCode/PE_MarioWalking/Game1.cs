@@ -13,7 +13,7 @@ namespace PE_MarioWalking
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        private MarioState state;
         // The Mario to draw depending on the current state
         private Mario mario;
 
@@ -74,8 +74,18 @@ namespace PE_MarioWalking
             // - Update Mario's state as needed
 
             // Step 1: Grab user input
+            KeyboardState keyboardState = Keyboard.GetState();
+
 
             // Step 2: Change state
+            if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                state = MarioState.FaceRight;
+            }
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                state = MarioState.FaceLeft;
+            }
 
             // Step 3: Move Mario only when walking
 
