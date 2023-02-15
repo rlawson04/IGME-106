@@ -13,9 +13,9 @@ namespace PE_MarioWalking
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private MarioState state;
         // The Mario to draw depending on the current state
         private Mario mario;
+        private KeyboardState prevKBState;
 
         // Constructor
         public Game1()
@@ -33,6 +33,7 @@ namespace PE_MarioWalking
         protected override void Initialize()
         {
             base.Initialize();
+            prevKBState = Keyboard.GetState();
         }
 
         /// <summary>
@@ -73,25 +74,106 @@ namespace PE_MarioWalking
             // - Then check for specific transitions inside each state (may require keyboard input)
             // - Update Mario's state as needed
 
-            // Step 1: Grab user input
+           
             KeyboardState keyboardState = Keyboard.GetState();
-
-
-            // Step 2: Change state
-            if (keyboardState.IsKeyDown(Keys.Right))
+            
+            // Switch that hamdles the FSM changing Mario's states based on user input
+            switch (mario.State)
             {
-                state = MarioState.FaceRight;
-            }
-            if (keyboardState.IsKeyDown(Keys.Left))
-            {
-                state = MarioState.FaceLeft;
-            }
+                // If he is facing left, he can transition to walking left, facing right, and crouching left
+                case MarioState.FaceLeft:
+                    if (keyboardState.IsKeyDown(Keys.Left) && prevKBState.IsKeyUp(Keys.Left))
+                    {
+                        mario.State = MarioState.WalkLeft;
 
-            // Step 3: Move Mario only when walking
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Right))
+                    {
+                        mario.State = MarioState.FaceRight;
+                       
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Down) && prevKBState.IsKeyUp(Keys.Down))
+                    {
+                        mario.State = MarioState.CrouchLeft;
+                    }
+                    break;
 
+                // If he is facing right, he can transition to walking right, facing left, and crouching right
+                case MarioState.FaceRight:
+                    if (keyboardState.IsKeyDown(Keys.Right) && prevKBState.IsKeyUp(Keys.Right))
+                    {
+                        mario.State = MarioState.WalkRight;
+                        
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Left))
+                    {
+                        mario.State = MarioState.FaceLeft;
+
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Down) && prevKBState.IsKeyUp(Keys.Down))
+                    {
+                        mario.State = MarioState.CrouchRight;
+                    }
+                    break;
+
+                // While the down key is being pressed he stays crouched and then transitions back to standing
+                case MarioState.CrouchRight:
+                    if (keyboardState.IsKeyDown(Keys.Down))
+                    {
+                        
+                    }
+                    else
+                    {
+                        mario.State = MarioState.FaceRight;
+                    }
+                    break;
+
+                // While the down key is being pressed he stays crouched and then transitions back to standing
+                case MarioState.CrouchLeft:
+                    if (keyboardState.IsKeyDown(Keys.Down))
+                    {
+
+                    }
+                    else
+                    {
+                        mario.State = MarioState.FaceLeft;
+                    }
+                    break;
+                   
+                // While walking he moves 3 pixels per frame and then if the key is no longer being pressed,
+                // he transitions back to standing 
+                case MarioState.WalkLeft:
+                    if (keyboardState.IsKeyDown(Keys.Left))
+                    { 
+                        mario.X -= 3;
+                    }
+                    else
+                    {
+                        mario.State = MarioState.FaceLeft;
+                    }
+                    break;
+
+                // While walking he moves 3 pixels per frame and then if the key is no longer being pressed,
+                // he transitions back to standing
+                case MarioState.WalkRight:
+                    if (keyboardState.IsKeyDown(Keys.Right))
+                    {
+                        mario.X += 3;
+                    }
+                    else
+                    {
+                        mario.State = MarioState.FaceRight;
+                    }
+                    break;
+
+                
+            }
             // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-
+           
             base.Update(gameTime);
+
+            // Checks previous keyboard state so that they can't transition to walking from standing the other way
+            prevKBState = keyboardState;
         }
 
 

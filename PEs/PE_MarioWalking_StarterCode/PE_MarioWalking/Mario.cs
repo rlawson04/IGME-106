@@ -14,7 +14,9 @@ namespace PE_MarioWalking
         FaceLeft,
         WalkLeft,
         FaceRight,
-        WalkRight // Add state(s) to support crouching
+        WalkRight,
+        CrouchLeft,
+        CrouchRight
     }
 
     // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -105,7 +107,35 @@ namespace PE_MarioWalking
             // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
             // PRACTICE EXERCISE: Check the finite state machine state here to
             // determine how exactly to draw Mario
-            DrawWalking(SpriteEffects.None, spriteBatch); // You may alter/remove this line
+
+            // Determines which state he is in, and then draws him using the helpre methods below
+            switch(State)
+            {
+                case MarioState.WalkLeft:
+                    DrawWalking(SpriteEffects.FlipHorizontally, spriteBatch);
+                    break;
+
+                case MarioState.WalkRight:
+                    DrawWalking(SpriteEffects.None, spriteBatch);
+                    break;
+
+                case MarioState.FaceLeft:
+                    DrawStanding(SpriteEffects.FlipHorizontally, spriteBatch);
+                    break;
+
+                case MarioState.FaceRight:
+                    DrawStanding(SpriteEffects.None, spriteBatch);
+                    break;
+
+                case MarioState.CrouchRight:
+                    DrawCrouching(SpriteEffects.None, spriteBatch);
+                    break;
+
+                case MarioState.CrouchLeft:
+                    DrawCrouching(SpriteEffects.FlipHorizontally, spriteBatch);
+                    break;
+            }
+            
 
             // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
         }
@@ -166,5 +196,30 @@ namespace PE_MarioWalking
         // Like the standing & walking methods above, you should only need ONE method
         // to handle drawing Mario crouching both left and right
         // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+        /// <summary>
+        /// Draws mario crouching
+        /// </summary>
+        /// <param name="flipSprite">
+        /// Enum values for flipping the sprite horizontally
+        /// and or vertically 
+        /// </param>
+        private void DrawCrouching(SpriteEffects flipSprite, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(
+                spriteSheet,                    
+                marioLoc,                       
+                new Rectangle(                  
+                    6 * MarioRectWidth,
+                    MarioRectOffsetY,
+                    MarioRectWidth,
+                    MarioRectHeight),
+                Color.White,                    
+                0,                              
+                Vector2.Zero,                   
+                1.0f,                           
+                flipSprite,                     
+                0);
+        }
     }
 }
