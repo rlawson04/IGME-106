@@ -4,6 +4,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace HW_2_MonoGame
 {
+    enum GameState
+    {
+        Menu,
+        Game,
+        GameOver
+    }
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
