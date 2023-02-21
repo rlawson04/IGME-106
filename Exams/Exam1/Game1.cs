@@ -22,8 +22,8 @@ namespace Exam1
         private Texture2D texture;
         private int ducks;
         private KeyboardState prevKBState;
-        private MouseState mState = Mouse.GetState();
-        
+        private MouseState prevMState;
+        private bool makeDuck;
 
         public Game1()
         {
@@ -53,7 +53,7 @@ namespace Exam1
                 Exit();
 
             KeyboardState kbstate = Keyboard.GetState();
-            
+            MouseState mState = Mouse.GetState();
 
             switch (currentState)
             {
@@ -65,11 +65,15 @@ namespace Exam1
                     break;
 
                 case State.Edit:
+                    makeDuck = false;
                     if (kbstate.IsKeyDown(Keys.Space) && prevKBState.IsKeyUp(Keys.Space))
                     {
                         currentState = State.Done;
                     }
-                    
+                    if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released)
+                    {
+                        makeDuck = true;
+                    }
                     break;
 
                 case State.Done:
@@ -83,12 +87,14 @@ namespace Exam1
             base.Update(gameTime);
 
             prevKBState = kbstate;
+            prevMState = mState;
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            MouseState mState = Mouse.GetState();
             GraphicsDevice.Clear(Color.Aqua);
-
+            
             _spriteBatch.Begin();
 
             switch (currentState)
@@ -100,14 +106,21 @@ namespace Exam1
                 case State.Edit:
                     _spriteBatch.DrawString(defaultFont, $"{ducks}", new Vector2(10, 10), Color.Black);
 
-                    while (ducks < 6)
+
+                    if (makeDuck && ducks < 5)
                     {
-                        if (mState.LeftButton == ButtonState.Pressed)
-                        {
-                            _spriteBatch.Draw(texture, new Vector2(mState.X, mState.Y), Color.White);
-                            ducks++;
-                        }
+                        _spriteBatch.Draw(texture, new Vector2(mState.X, mState.Y), Color.Yellow);
+                        ducks++;
                     }
+                    if (ducks == 5)
+                    {
+
+                         _spriteBatch.Draw(texture, new Vector2(mState.X, mState.Y), Color.Orange);
+                    }
+
+                        
+                    
+
 
                     break;
 
@@ -119,6 +132,7 @@ namespace Exam1
             _spriteBatch.End();
 
             base.Draw(gameTime);
+            
         }
     }
 }
