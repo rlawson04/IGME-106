@@ -8,46 +8,48 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace HW_2_MonoGame
 {
-    internal class Player : GameObject
+    abstract class GameObject
     {
         // -----------------------------------
         // Fields
         // -----------------------------------
 
-        protected int levelScore;
-        protected int totalScore;
-        protected int windowWidth;
-        protected int windowHeight;
+        protected Texture2D texture;
+        protected Rectangle rectangle;
 
         // -----------------------------------
         // Properties
         // -----------------------------------
 
-        public int LevelScore
+        public Texture2D Texture
         {
-            get { return levelScore; }
+            get { return texture; }
         }
 
-        public int TotalScore
+        public Rectangle Rectangle
         {
-            get { return totalScore; }
+            get { return rectangle; }
         }
+
         // -----------------------------------
         // Constructors
         // -----------------------------------
 
-        public Player(Texture2D texture, Rectangle rectangle, int levelScore,
-            int totalScore, int windowWidth, int windowHeight) 
-            : base(texture, rectangle)
+        protected GameObject (Texture2D texture, Rectangle rectangle)
         {
-            this.levelScore = levelScore;
-            this.totalScore = totalScore;
-            this.windowWidth = windowWidth; 
-            this.windowHeight = windowHeight;
+            this.texture = texture;
+            this.rectangle = rectangle;
         }
 
         // -----------------------------------
         // Methods
         // -----------------------------------
+
+        public virtual void Draw (SpriteBatch sb)
+        {
+            sb.Draw(texture, rectangle, Color.White);
+        }
+
+        public abstract void Update (GameTime gameTime);
     }
 }
