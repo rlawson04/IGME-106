@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace HW_2_MonoGame
 {
@@ -15,6 +16,11 @@ namespace HW_2_MonoGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private GameState currentState;
+        private Player Player;
+        private List<Collectible> collectibles;
+        private int currentLevel;
+        private double timer;
 
         public Game1()
         {
@@ -51,7 +57,17 @@ namespace HW_2_MonoGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            switch (currentState)
+            {
+                case GameState.Menu:
+                    break;
+
+                case GameState.Game:
+                    break;
+
+                case GameState.GameOver:
+                    break;
+            }
 
             base.Draw(gameTime);
         }

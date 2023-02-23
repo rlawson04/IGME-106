@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace HW_2_MonoGame
 {
@@ -49,5 +50,59 @@ namespace HW_2_MonoGame
         // -----------------------------------
         // Methods
         // -----------------------------------
+
+        public override void Update(GameTime gameTime)
+        {
+            KeyboardState kbState = Keyboard.GetState();
+
+            // Movement of the player
+            if (kbState.IsKeyDown(Keys.Up))
+            {
+                rectangle.Y++;
+            }
+
+            if (kbState.IsKeyDown(Keys.Down))
+            { 
+                rectangle.Y--;
+            }
+
+            if (kbState.IsKeyDown(Keys.Left))
+            {
+                rectangle.X--;
+            }
+
+            if (kbState.IsKeyDown(Keys.Right))
+            {
+                rectangle.X++;
+            }
+
+            // Making the player wrap around the window
+            if (rectangle.Y < 0)
+            {
+                rectangle.Y = windowHeight;
+            }
+
+            if (rectangle.X < 0)
+            {
+                rectangle.X = windowWidth;
+            }
+
+            if (rectangle.Y > windowHeight)
+            {
+                rectangle.Y = 0;
+            }
+
+            if (rectangle.X > windowWidth)
+            {
+                rectangle.X = 0;
+            }
+        }
+
+        public void Center()
+        {
+            rectangle.X = windowWidth/2 + 50;
+            rectangle.Y = windowHeight/2 + 50;
+            
+        }
     }
 }
