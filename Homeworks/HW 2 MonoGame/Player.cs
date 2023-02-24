@@ -60,22 +60,22 @@ namespace HW_2_MonoGame
             // Movement of the player
             if (kbState.IsKeyDown(Keys.Up))
             {
-                rectangle.Y++;
+                rectangle.Y-=5;
             }
 
             if (kbState.IsKeyDown(Keys.Down))
             { 
-                rectangle.Y--;
+                rectangle.Y+=5;
             }
 
             if (kbState.IsKeyDown(Keys.Left))
             {
-                rectangle.X--;
+                rectangle.X-=5;
             }
 
             if (kbState.IsKeyDown(Keys.Right))
             {
-                rectangle.X++;
+                rectangle.X+=5;
             }
 
             // Making the player wrap around the window

@@ -32,7 +32,7 @@ namespace HW_2_MonoGame
         private Texture2D texture;
         private Texture2D texture2;
         private Random rng = new Random();
-        
+        private int highScore;
 
         public Game1()
         {
@@ -43,13 +43,13 @@ namespace HW_2_MonoGame
 
         protected override void Initialize()
         {
-            
 
+            
             base.Initialize();
         }
 
         protected override void LoadContent()
-        {
+        { 
             int width = _graphics.GraphicsDevice.Viewport.Width;
             int height = _graphics.GraphicsDevice.Viewport.Height;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -71,7 +71,7 @@ namespace HW_2_MonoGame
             switch(currentState)
             {
                 case GameState.Menu:
-                    //if (kbState.IsKeyDown(Keys.Enter) && prevKBState.IsKeyUp(Keys.Enter))
+                    
                     if(SingleKeyPress(Keys.Enter, kbState))
                     {
                         ResetGame();
@@ -80,27 +80,55 @@ namespace HW_2_MonoGame
                     break;
 
                 case GameState.Game:
+                    // Ends game if time runs out
                     if (timer <= 0)
                     {
                         currentState = GameState.GameOver;
                     }
 
+                    // Handles movement for the player 
                     Player.Update(gameTime);
 
+                    // Checks collision for each collectible
                     foreach (Collectible c in collectibles)
                     {
-                        if (c.CheckCollision(Player) == true)
+                        if (c.CheckCollision(Player) == true && c.Active)
                         {
                             c.Active = false;
                             Player.LevelScore++;
                         }
                     }
+
+                    // Removes the collectible after it has collided
+                    for(int i = 0; i < collectibles.Count; i++)
+                    {
+                        if(collectibles[i].Active==false)
+                        {
+                            collectibles.Remove(collectibles[i]);
+                        }
+                    }
+                    
+
+                    // Updates timer using the game time
+                    timer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                    if (collectibles.Count == 0)
+                    {
+                        Player.TotalScore += Player.LevelScore;
+                        NextLevel();
+                    }
                     break;
 
                 case GameState.GameOver:
-                    if (kbState.IsKeyDown(Keys.Enter) && prevKBState.IsKeyUp(Keys.Enter))
+
+                    // Returns to Main menu when enter is pressed
+                    if (SingleKeyPress(Keys.Enter, kbState))
                     {
                         currentState = GameState.Menu;
+                    }
+                    if (Player.TotalScore > highScore)
+                    {
+                        highScore = Player.TotalScore;
                     }
                     break;
             }
@@ -118,24 +146,36 @@ namespace HW_2_MonoGame
             switch (currentState)
             {
                 case GameState.Menu:
-                    _spriteBatch.DrawString(mainFont, "Title \nPress ENTER to begin: ",
+                    _spriteBatch.DrawString(mainFont, $"Title " +
+                        $"\n Current High Score: {highScore}" +
+                        $"\nPress ENTER to begin: ",
                         new Vector2(10, 10), Color.Black);
                     break;
 
                 case GameState.Game:
-                    _spriteBatch.DrawString(mainFont, $"Current level {currentLevel}" +
-                        $" \n{Player.LevelScore} \n{timer}", new Vector2(10, 10), Color.Black);
+                    
+
+                    _spriteBatch.Draw(Player.Texture, Player.Rectangle, Color.White);
 
                     foreach (Collectible c in collectibles)
                     {
-                        _spriteBatch.Draw(c.Texture, c.Rectangle, Color.White);
+                        if (c.Active)
+                        {
+                            _spriteBatch.Draw(c.Texture, c.Rectangle, Color.White);
+                        }
                     }
+
+                    _spriteBatch.DrawString(mainFont, $"Current level {currentLevel}" +
+                        $" \nScore {Player.LevelScore} \nTime Left {Math.Round(timer, 2)}" +
+                        $"\nCollectibles left {collectibles.Count}", new Vector2(10, 10),
+                        Color.Black);
                     break;
 
                 case GameState.GameOver:
-                    _spriteBatch.DrawString(mainFont, $"Final Level {currentLevel} \nFinal Score" +
-                        $" {Player.TotalScore} \nPress ENTER to return to the Main Menu",
-                        new Vector2(300, 300), Color.Black);
+                    _spriteBatch.DrawString(mainFont, $"Final Level {currentLevel} " +
+                        $"\nFinal Score {Player.TotalScore}" +
+                        $" \nPress ENTER to return to the Main Menu",
+                        new Vector2(200, 200), Color.Black);
                     break;
             }
 
@@ -151,17 +191,18 @@ namespace HW_2_MonoGame
             currentLevel++;
             timer = 10.0;
             Player.LevelScore = 0;
+            Player.Center();
 
             if (collectibles != null)
             {
                 collectibles.Clear();
             }
 
-            for (int i = 0; i < rng.Next(0,10 + currentLevel *3); i++)
+            for (int i = 0; i < rng.Next(10 + currentLevel, 10 + currentLevel *3); i++)
             {
                 //Texture2D texture, Rectangle rectangle, bool active
                 collectibleTarget = new Collectible(texture2,
-                    new Rectangle(rng.Next(0, width),rng.Next(0,height), 50,50), true);
+                    new Rectangle(rng.Next(0, width - 20),rng.Next(0,height - 20), 75,75), true);
                 collectibles.Add(collectibleTarget);
                 
             }
@@ -189,6 +230,12 @@ namespace HW_2_MonoGame
                 return false;
             }
             
+        }
+
+        private void HighScore()
+        {
+            
+            highScore = 0;
         }
     }
 }
