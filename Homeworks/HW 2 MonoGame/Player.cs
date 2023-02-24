@@ -27,11 +27,13 @@ namespace HW_2_MonoGame
         public int LevelScore
         {
             get { return levelScore; }
+            set { levelScore = value; }
         }
 
         public int TotalScore
         {
             get { return totalScore; }
+            set { totalScore = value; }
         }
         // -----------------------------------
         // Constructors
