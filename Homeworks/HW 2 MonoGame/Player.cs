@@ -24,12 +24,18 @@ namespace HW_2_MonoGame
         // Properties
         // -----------------------------------
 
+        /// <summary>
+        /// Get and set method to keep track of the players level score
+        /// </summary>
         public int LevelScore
         {
             get { return levelScore; }
             set { levelScore = value; }
         }
 
+        /// <summary>
+        /// Get and set method to keep track of the players total score
+        /// </summary>
         public int TotalScore
         {
             get { return totalScore; }
@@ -39,6 +45,15 @@ namespace HW_2_MonoGame
         // Constructors
         // -----------------------------------
 
+        /// <summary>
+        /// parameterized constructor that leverages the base class
+        /// </summary>
+        /// <param name="texture"> 2D texture from content folder </param>
+        /// <param name="rectangle"> takes in a rectangle </param>
+        /// <param name="levelScore"> takes in the players initial level score </param>
+        /// <param name="totalScore"> takes in the players initial total score</param>
+        /// <param name="windowWidth"> takes in the width of the window to check colision </param>
+        /// <param name="windowHeight"> take in the height of the window to check colision</param>
         public Player(Texture2D texture, Rectangle rectangle, int levelScore,
             int totalScore, int windowWidth, int windowHeight) 
             : base(texture, rectangle)
@@ -53,6 +68,10 @@ namespace HW_2_MonoGame
         // Methods
         // -----------------------------------
 
+        /// <summary>
+        /// Updates the player in real time, handling movement and screen wrapping
+        /// </summary>
+        /// <param name="gameTime"> takes in the game time to update </param>
         public override void Update(GameTime gameTime)
         {
             KeyboardState kbState = Keyboard.GetState();
@@ -100,6 +119,9 @@ namespace HW_2_MonoGame
             }
         }
 
+        /// <summary>
+        /// Moves the player back to the center of the screen
+        /// </summary>
         public void Center()
         {
             rectangle.X = windowWidth/2 + 50;

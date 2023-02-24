@@ -3,6 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq.Expressions;
+using System.Xml;
 
 namespace HW_2_MonoGame
 {
@@ -33,6 +37,7 @@ namespace HW_2_MonoGame
         private Texture2D texture2;
         private Random rng = new Random();
         private int highScore;
+        private FileStream fs = new FileStream("../../../Highscore.txt", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
 
         public Game1()
         {
@@ -43,13 +48,12 @@ namespace HW_2_MonoGame
 
         protected override void Initialize()
         {
-
-            
             base.Initialize();
         }
 
         protected override void LoadContent()
         { 
+            // Content to be loaded and initialized in the program
             int width = _graphics.GraphicsDevice.Viewport.Width;
             int height = _graphics.GraphicsDevice.Viewport.Height;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -66,13 +70,18 @@ namespace HW_2_MonoGame
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // Current keyboard state to check against the previous state 
             KeyboardState kbState = Keyboard.GetState();
 
             switch(currentState)
             {
                 case GameState.Menu:
-                    
-                    if(SingleKeyPress(Keys.Enter, kbState))
+
+                    // Uses a stream reader to load the high score 
+                    LoadHighScore();
+
+                    // Changes state when enter key is pressed
+                    if (SingleKeyPress(Keys.Enter, kbState))
                     {
                         ResetGame();
                         currentState = GameState.Game;
@@ -96,6 +105,7 @@ namespace HW_2_MonoGame
                         {
                             c.Active = false;
                             Player.LevelScore++;
+                            
                         }
                     }
 
@@ -112,11 +122,18 @@ namespace HW_2_MonoGame
                     // Updates timer using the game time
                     timer -= gameTime.ElapsedGameTime.TotalSeconds;
 
+                    // Updates the total score after the level is completed
+                    // or if the user ran out of time
                     if (collectibles.Count == 0)
                     {
                         Player.TotalScore += Player.LevelScore;
                         NextLevel();
                     }
+                    else if (timer <= 0)
+                    {
+                        Player.TotalScore+=Player.LevelScore;
+                    }
+     
                     break;
 
                 case GameState.GameOver:
@@ -126,9 +143,13 @@ namespace HW_2_MonoGame
                     {
                         currentState = GameState.Menu;
                     }
+
+                    // Takes the players total score and
+                    // sets the new highscore if the current highscore is lower
                     if (Player.TotalScore > highScore)
                     {
                         highScore = Player.TotalScore;
+                        RecordHighScore();
                     }
                     break;
             }
@@ -145,13 +166,16 @@ namespace HW_2_MonoGame
 
             switch (currentState)
             {
+                    // Draws the main menu with the Title, high score, and info to start
                 case GameState.Menu:
                     _spriteBatch.DrawString(mainFont, $"Title " +
-                        $"\n Current High Score: {highScore}" +
+                        $"\nCurrent High Score: {highScore}" +
                         $"\nPress ENTER to begin: ",
                         new Vector2(10, 10), Color.Black);
                     break;
 
+                    // Draws all the collectibles in the list as well as the statistics including
+                    // the current level, score, time left, collectibles left, and the high score
                 case GameState.Game:
                     
 
@@ -167,10 +191,13 @@ namespace HW_2_MonoGame
 
                     _spriteBatch.DrawString(mainFont, $"Current level {currentLevel}" +
                         $" \nScore {Player.LevelScore} \nTime Left {Math.Round(timer, 2)}" +
-                        $"\nCollectibles left {collectibles.Count}", new Vector2(10, 10),
+                        $"\nCollectibles left {collectibles.Count}" +
+                        $"\nHigh Score {highScore}", new Vector2(10, 10),
                         Color.Black);
                     break;
 
+                    // Draws a string to display the final level, score,
+                    // and directions to go back to the main menu
                 case GameState.GameOver:
                     _spriteBatch.DrawString(mainFont, $"Final Level {currentLevel} " +
                         $"\nFinal Score {Player.TotalScore}" +
@@ -184,20 +211,25 @@ namespace HW_2_MonoGame
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Sets up the next level by generating new objects and reseting the timer and score
+        /// </summary>
         private void NextLevel()
         {
             int width = _graphics.GraphicsDevice.Viewport.Width;
             int height = _graphics.GraphicsDevice.Viewport.Height;
             currentLevel++;
-            timer = 10.0;
+            timer = 15.0;
             Player.LevelScore = 0;
             Player.Center();
 
+            // Clears the collectibles list
             if (collectibles != null)
             {
                 collectibles.Clear();
             }
 
+            //Creates a random amount of objects of the collectible class
             for (int i = 0; i < rng.Next(10 + currentLevel, 10 + currentLevel *3); i++)
             {
                 //Texture2D texture, Rectangle rectangle, bool active
@@ -208,6 +240,9 @@ namespace HW_2_MonoGame
             }
         }
 
+        /// <summary>
+        /// Sets the score to 0 and generates the next level
+        /// </summary>
         private void ResetGame()
         {
             if(currentState == GameState.Menu)
@@ -218,6 +253,12 @@ namespace HW_2_MonoGame
             }
         }
 
+        /// <summary>
+        /// Checks if there is a single key pressed by leveraging two keyboard states
+        /// </summary>
+        /// <param name="key"> takes in a key from the keys enum </param>
+        /// <param name="kbState"> takes in a state of the keyboard state enum </param>
+        /// <returns></returns>
         private bool SingleKeyPress(Keys key, KeyboardState kbState)
         {
             kbState = Keyboard.GetState();
@@ -232,10 +273,34 @@ namespace HW_2_MonoGame
             
         }
 
-        private void HighScore()
+        /// <summary>
+        /// Uses a stream Writer to record the new high score
+        /// </summary>
+        private void RecordHighScore()
         {
-            
-            highScore = 0;
+            using (StreamWriter writer = new StreamWriter("../../../Highscore"))
+            {
+                writer.Write(highScore);
+                writer.Close();
+            }
+                   
         }
+
+        /// <summary>
+        /// Uses a stream Reader to read in the file with the current highscore
+        /// </summary>
+        private void LoadHighScore()
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader("../../../Highscore"))
+                {
+                    highScore = int.Parse(reader.ReadLine());
+                    reader.Close();
+                }
+            }
+            catch { }
+        }
+        
     }
 }

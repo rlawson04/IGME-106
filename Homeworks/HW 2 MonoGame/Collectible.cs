@@ -20,6 +20,9 @@ namespace HW_2_MonoGame
         // Properties
         // -----------------------------------
 
+        /// <summary>
+        /// Get and set property to check if the collectible is active or not
+        /// </summary>
         public bool Active
         {
             get { return active; }
@@ -31,6 +34,12 @@ namespace HW_2_MonoGame
         // Constructors
         // -----------------------------------
 
+        /// <summary>
+        /// parameterized constructor for the collectible class that leverages the gameobject base
+        /// </summary>
+        /// <param name="texture"> takes in a 2D texture from the content folder </param>
+        /// <param name="rectangle"> takes in a rectangle </param>
+        /// <param name="active"> takes in a bool that checks if it is active </param>
         public Collectible(Texture2D texture, Rectangle rectangle, bool active)
             : base(texture, rectangle)
         {
@@ -41,6 +50,11 @@ namespace HW_2_MonoGame
         // Methods
         // -----------------------------------
 
+        /// <summary>
+        /// Uses the intersects method of the rectangle to check collision
+        /// </summary>
+        /// <param name="check"> takes in a child of the game object base </param>
+        /// <returns> bool meaning if the objects are colliding </returns>
         public bool CheckCollision(GameObject check)
         {
             bool collision = false;
@@ -54,6 +68,10 @@ namespace HW_2_MonoGame
             return collision;
         }
 
+        /// <summary>
+        /// Checks if the collectible is active and then draws it
+        /// </summary>
+        /// <param name="sb"> takes in a spritebatch object </param>
         public override void Draw(SpriteBatch sb)
         {
             if (active)
@@ -62,6 +80,10 @@ namespace HW_2_MonoGame
             }
         }
 
+        /// <summary>
+        /// Does nothing but is required to inherit from the game object
+        /// </summary>
+        /// <param name="gameTime"> takes in a game time object </param>
         public override void Update(GameTime gameTime)
         {
         }

@@ -21,11 +21,17 @@ namespace HW_2_MonoGame
         // Properties
         // -----------------------------------
 
+        /// <summary>
+        /// Get method that returns the texture of the inherited object
+        /// </summary>
         public Texture2D Texture
         {
             get { return texture; }
         }
 
+        /// <summary>
+        /// Get method that returns the rectangle of the inherited object
+        /// </summary>
         public Rectangle Rectangle
         {
             get { return rectangle; }
@@ -35,6 +41,11 @@ namespace HW_2_MonoGame
         // Constructors
         // -----------------------------------
 
+        /// <summary>
+        /// Parameterized constructor for the game object base class
+        /// </summary>
+        /// <param name="texture"> takes in a 2D texture </param>
+        /// <param name="rectangle"> takes in a rectangle </param>
         protected GameObject (Texture2D texture, Rectangle rectangle)
         {
             this.texture = texture;
@@ -45,11 +56,19 @@ namespace HW_2_MonoGame
         // Methods
         // -----------------------------------
 
+        /// <summary>
+        /// Draws the given spritebatch using the texture and rectangle
+        /// </summary>
+        /// <param name="sb"></param>
         public virtual void Draw (SpriteBatch sb)
         {
             sb.Draw(texture, rectangle, Color.White);
         }
 
+        /// <summary>
+        /// abstract method for the child classes to inherit
+        /// </summary>
+        /// <param name="gameTime"> pass in the game time </param>
         public abstract void Update (GameTime gameTime);
     }
 }
