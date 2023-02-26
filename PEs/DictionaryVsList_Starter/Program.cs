@@ -22,8 +22,8 @@ namespace DictionaryVsList_Starter
 			// Put your code between here...
 
 			string userInput = " ";
-
-			
+			string doubleWord = " ";
+			bool isDouble = false;
 
 			while (userInput != "Q")
 			{
@@ -34,7 +34,16 @@ namespace DictionaryVsList_Starter
                 switch (userInput)
                 {
                     case "L":
-                        Console.WriteLine("CHECKING LIST");
+                        for(int i = 0; i < wordList.Count; i++)
+						{
+							doubleWord = wordList[i] + wordList[i];
+
+                            if (wordList.Contains(doubleWord))
+							{
+								Console.WriteLine(doubleWord);
+							}
+							
+						}
                         Console.WriteLine();
                         break;
 
