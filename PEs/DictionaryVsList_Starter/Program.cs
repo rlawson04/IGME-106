@@ -21,8 +21,41 @@ namespace DictionaryVsList_Starter
 			// *********************
 			// Put your code between here...
 
+			string userInput = " ";
 
+			
 
+			while (userInput != "Q")
+			{
+				
+                Console.Write("Do you want to search the LIST (L), DICTIONARY (D), or QUIT (Q)?\n> ");
+                userInput = Console.ReadLine().ToUpper();
+
+                switch (userInput)
+                {
+                    case "L":
+                        Console.WriteLine("CHECKING LIST");
+                        Console.WriteLine();
+                        break;
+
+                    case "D":
+						Console.WriteLine("CHECKING DICTIONARY");
+                        Console.WriteLine();
+                        break;
+
+					case "Q":
+						break;
+
+                    default:
+                        Console.WriteLine("Sorry, could you enter either the letter 'D', 'L', or 'Q'?");
+                        Console.Write("Do you want to search the LIST (L) or DICTIONARY (D)?\n> ");
+                        userInput = Console.ReadLine().ToUpper();
+                        break;
+                }
+            }
+
+			Console.WriteLine("Thank you for searching!");
+			
 
 
 			// ...and here.

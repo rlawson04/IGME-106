@@ -44,9 +44,10 @@ namespace DictionaryVsList_Starter
                 string line = null;
                 while ((line = reader.ReadLine()) != null)
                 {
+                    // Add the line to both the list and the dictionary
                     // ***************************************************************************
-                    // *** REPLACE THIS with code to add the word to both the list and the dictionary
-                    Console.WriteLine(line);
+                    wordList.Add(line);
+                    wordDictionary.Add(line, false);
                     // ***************************************************************************
                 }
             }
