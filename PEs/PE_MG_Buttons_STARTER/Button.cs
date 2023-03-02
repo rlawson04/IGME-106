@@ -36,11 +36,14 @@ namespace PE_MG_Buttons
         /// 
         /// The delegate will be called with a reference to the clicked button.
         /// </summary>
-        public event OnButtonClickDelegate OnButtonClick;
+        public event OnButtonClickDelegate OnButtonLeftClick;
+
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // TODO: Add your new event here!
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public event OnButtonClickDelegate OnButtonRightClick;
 
         /// <summary>
         /// Create a new custom button
@@ -86,15 +89,29 @@ namespace PE_MG_Buttons
                 prevMState.LeftButton == ButtonState.Pressed &&
                 this.position.Contains(mState.Position))
             {
-                if (OnButtonClick != null)
+                if (OnButtonLeftClick != null)
                 {
-                    OnButtonClick();
+                    OnButtonLeftClick();
                 }
+                
             }
+
 
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Add your new click detection here!
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+            if (mState.RightButton == ButtonState.Released &&
+                prevMState.RightButton == ButtonState.Pressed &&
+                this.position.Contains(mState.Position))
+            {
+                if (OnButtonRightClick != null)
+                {
+                    OnButtonRightClick();
+                }
+
+            }
+            
 
             prevMState = mState;
         }

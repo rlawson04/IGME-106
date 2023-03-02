@@ -22,6 +22,11 @@ namespace PE_MG_Buttons
         // TODO: ADD Your new fields here!
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+        private int numberOfLeftClicks;
+        private Texture2D raindrop;
+        private List<Raindrop> raindrops = new List<Raindrop>();
+        private int numberOfRightClicks;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -43,6 +48,8 @@ namespace PE_MG_Buttons
             // TODO: use this.Content to load your game content here
             font = Content.Load<SpriteFont>("buttonFont");
 
+            raindrop = Content.Load<Texture2D>("Rain drop");
+
             // Create a few 100x200 buttons down the left side
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
@@ -50,12 +57,35 @@ namespace PE_MG_Buttons
                     "Random BG",
                     font,
                     Color.Purple));
-            buttons[0].OnButtonClick += this.RandomizeBackground;
+            buttons[0].OnButtonLeftClick += this.RandomizeBackground;
+            buttons[0].OnButtonRightClick += this.RandomizeBackground;
+            buttons[0].OnButtonLeftClick += this.LeftButtonClicked;
+            buttons[0].OnButtonRightClick += this.RightButtonClicked;
 
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 150, 200, 100),
+                    "Snow",
+                    font,
+                    Color.Green));
+            buttons[1].OnButtonLeftClick += this.SnowButton;
+            buttons[1].OnButtonRightClick += this.SnowButton;
+            buttons[1].OnButtonLeftClick += this.LeftButtonClicked;
+            buttons[1].OnButtonRightClick += this.RightButtonClicked;
+
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 260, 200, 100),
+                    "Rain",
+                    font,
+                    Color.Red));
+            buttons[2].OnButtonLeftClick += this.RainButton;
+            buttons[2].OnButtonRightClick += this.RainButton;
+            buttons[2].OnButtonLeftClick += this.LeftButtonClicked;
+            buttons[2].OnButtonRightClick += this.RightButtonClicked;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Add your additional button setup code here!
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
         }
 
         // There is no need to add anything to Game1's Update method!
@@ -81,7 +111,14 @@ namespace PE_MG_Buttons
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Add your additional drawing code here!
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            _spriteBatch.DrawString(font, $"# of button clicks: Left - {numberOfLeftClicks}," +
+                $" Right - {numberOfRightClicks}", new Vector2(10, 10), Color.Black);
 
+            // Draws in any raindrops
+            foreach (Raindrop r in raindrops)
+            {
+                r.Draw(_spriteBatch);
+            }
 
             // Draw the buttons last.
             foreach (Button b in buttons)
@@ -89,6 +126,7 @@ namespace PE_MG_Buttons
                 b.Draw(_spriteBatch);
             }
 
+            
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -111,5 +149,43 @@ namespace PE_MG_Buttons
         // TODO: Add your new button click handlers here!
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+        /// <summary>
+        /// Increments whenever left button clicked is called
+        /// </summary>
+        public void LeftButtonClicked()
+        { 
+            numberOfLeftClicks++;
+            
+        }
+
+        /// <summary>
+        /// Increments whenever right button clicked is called
+        /// </summary>
+        public void RightButtonClicked()
+        {
+            numberOfRightClicks++;
+
+        }
+
+        /// <summary>
+        /// Changes background to white
+        /// </summary>
+        public void SnowButton()
+        {
+            bgColor = Color.White;
+        }
+
+        /// <summary>
+        /// Creates a new raindrop and adds it to the list
+        /// </summary>
+        public void RainButton()
+        {
+            raindrops.Add(new Raindrop(raindrop, 
+                new Rectangle(rng.Next(0, 600),
+                rng.Next(0, 300), 
+                rng.Next(100, 200), 
+                rng.Next(100, 200))));
+            
+        }
     }
 }
