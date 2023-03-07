@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PE_Windows_UI
+namespace Windows_UI_PE
 {
     internal static class Program
     {

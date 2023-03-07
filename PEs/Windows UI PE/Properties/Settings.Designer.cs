@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PE_Windows_UI.Properties
+namespace Windows_UI_PE.Properties
 {
 
 

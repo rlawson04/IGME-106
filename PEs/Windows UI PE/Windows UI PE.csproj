@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3F119F68-FA00-4F6E-AE92-B05B80D09236}</ProjectGuid>
+    <ProjectGuid>{8E0DB16F-1EEA-4D6E-8776-2D1430B4281F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PE_Windows_UI</RootNamespace>
-    <AssemblyName>PE Windows UI</AssemblyName>
+    <RootNamespace>Windows_UI_PE</RootNamespace>
+    <AssemblyName>Windows UI PE</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -54,9 +54,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
