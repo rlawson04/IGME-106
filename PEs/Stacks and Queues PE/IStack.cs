@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Stacks_and_Queues_PE
 {
-        // DO NOT MODIFY THIS CODE
-        interface IStack<T>
-        {
+    internal interface IStack<T>
+    {
             /// <summary>
             /// Gets the current count of items in the stack
             /// </summary>
@@ -32,5 +31,5 @@ namespace Stacks_and_Queues_PE
             /// of the stack. Returns null if the stack is empty.
             /// </summary>
             T Pop();
-        }
+    }
 }
