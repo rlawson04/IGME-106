@@ -1,0 +1,30 @@
+﻿
+~~~~~~~~~~~~~~~~~~~~ LL of ints ~~~~~~~~~~~~~~~~~~~~
+Total number of ints: 5
+Remove 15
+ - 0
+ - 5
+ - 10
+ - 20
+
+~~~~~~~~~~~~~~~~~~~~ LL of strings ~~~~~~~~~~~~~~~~~~~~
+Current number of pets: 0
+
+Current number of pets: 4
+ - Aiden
+ - Pax
+ - Shiro
+ - Lacey
+Correctly got an exception from the indexer's get: Index 4 is bad for list with 4 elements.
+Correctly got an exception from the indexer's set: Index 4 is bad for list with 4 elements.
+
+Current number of pets: 3
+ - Pax
+ - Shiro
+ - Lacy
+
+~~~~~~~~~~~~~~~~~~~~ LL of players ~~~~~~~~~~~~~~~~~~~~
+Current number of players: 3
+ - Pax with a score of 2
+ - Lacy with a score of 1
+ - Shiro with a score of 4
