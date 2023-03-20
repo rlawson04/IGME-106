@@ -51,19 +51,23 @@ namespace PE_LinkedLists
 
                 // Return the data where we stopped
 
-               
-               if(index >= Count)
-               {
-                   throw new IndexOutOfRangeException();
-               }
-
-               MyLinkedNode<T> currentNode = head;
-               for (int i = 0; i < index; i++)
-               {
-                   currentNode = currentNode.Next;
-               }
-                               
-               return currentNode.Data;
+                // Throws an exception if the index is larger or equal to the count
+                if(index >= Count)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                
+                // Keeps track to iterate through
+                MyLinkedNode<T> currentNode = head;
+                
+                // iteration to find which data the index wants
+                for (int i = 0; i < index; i++)
+                {
+                    currentNode = currentNode.Next;
+                }
+                                
+                // Returns the node once it is found at the given index
+                return currentNode.Data;
                    
                 
                 
@@ -81,18 +85,22 @@ namespace PE_LinkedLists
 
                 // Set the data where we stopped
 
+                // Throws an exception if the index is larger or equal to the count
                 if (index >= Count)
                 {
                     throw new IndexOutOfRangeException();
                 }
 
+                // Keeps track to iterate through
                 MyLinkedNode<T> currentNode = head;
 
+                // iteration to find which data the index wants
                 for (int i = 0; i < index; i++)
                 {
                     currentNode = currentNode.Next;
                 }
 
+                // If the current node is not null, it sets the data to the value
                 if (currentNode != null)
                 {
                     currentNode.Data = value;
@@ -170,16 +178,25 @@ namespace PE_LinkedLists
 
             // If we got this far, we didn't find anything to remove
 
+            // Bool to keep track of the return value
             bool check = false;
+
+            // Node to keep track of the current node when iterating
             MyLinkedNode<T> currentNode = head;
+
+            // When the data is referenced to the head
             if (head.Data.CompareTo(data) == 0)
             {
                 head = head.Next;
                 Count--;
                 check = true;
             }
+
+            // When it is any other value in the list
             else 
             {
+                // Iterates through and finds the index then skips over it
+                // by setting its next to the next of the next
                 for (var i = 0; i < Count; i++)
                 {
                     if (currentNode.Next.Data.CompareTo(data) == 0)
@@ -195,7 +212,7 @@ namespace PE_LinkedLists
                 }
             }
             
-
+            // Returns the bool from above
             return check;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
@@ -208,6 +225,7 @@ namespace PE_LinkedLists
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Implement the Clear method. You do NOT need a loop here!!!
 
+            // Resets the head and the count
             head = null;
             Count = 0;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
