@@ -47,6 +47,17 @@
                 // Hop down the chain index # of times
 
                 // Return the data where we stopped
+
+                try
+                {
+                    for (int i = 0; i < )
+                    return this[index];
+                }
+                catch  (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return default(T);
+                }
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             }
             set
@@ -60,6 +71,15 @@
                 // Hop down the chain index # of times
 
                 // Set the data where we stopped
+
+                try
+                {
+                    this[index] = value;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             }
         }
