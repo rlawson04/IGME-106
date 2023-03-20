@@ -1,4 +1,7 @@
-﻿namespace PE_LinkedLists
+﻿using System;
+using System.Diagnostics.Metrics;
+
+namespace PE_LinkedLists
 {
     /// <summary>
     /// A custom linked list.
@@ -48,16 +51,22 @@
 
                 // Return the data where we stopped
 
-                try
-                {
-                    for (int i = 0; i < )
-                    return this[index];
-                }
-                catch  (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return default(T);
-                }
+               
+               if(index >= Count)
+               {
+                   throw new IndexOutOfRangeException();
+               }
+
+               MyLinkedNode<T> currentNode = head;
+               for (int i = 0; i < index; i++)
+               {
+                   currentNode = currentNode.Next;
+               }
+                               
+               return currentNode.Data;
+                   
+                
+                
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             }
             set
@@ -72,14 +81,24 @@
 
                 // Set the data where we stopped
 
-                try
+                if (index >= Count)
                 {
-                    this[index] = value;
+                    throw new IndexOutOfRangeException();
                 }
-                catch (Exception ex)
+
+                MyLinkedNode<T> currentNode = head;
+
+                for (int i = 0; i < index; i++)
                 {
-                    Console.WriteLine(ex.Message);
+                    currentNode = currentNode.Next;
                 }
+
+                if (currentNode != null)
+                {
+                    currentNode.Data = value;
+                }
+                            
+                
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             }
         }
@@ -94,14 +113,37 @@
             // TODO: Implement the Add method
             // Adding to an empty list, set the head
 
-                // Adding to the end of a non - empty list!
-                // We need to find the end first - and we have to start at head to do that
+            // Adding to the end of a non - empty list!
+            // We need to find the end first - and we have to start at head to do that
 
-                // Hop down the chain of nodes until we hit the end (i.e. the node with no next)
+            // Hop down the chain of nodes until we hit the end (i.e. the node with no next)
 
-                // Now make that last node refer to the new one
+            // Now make that last node refer to the new one
 
             // No matter how we added, update the count
+
+            // New node to add
+            MyLinkedNode<T> newNode = new MyLinkedNode<T>(data); 
+
+            // If empty list, adds node as new head
+            if (head == null)
+            {
+                head = newNode;
+                Count++;
+                return;
+            }
+
+            // Checks current node and iterates through the nodes
+            MyLinkedNode<T> currentNode = head;
+            while(currentNode.Next != null)
+            {
+                currentNode = currentNode.Next;
+            }
+
+            // Once it finds a null node, it makes a new node at the end
+            currentNode.Next = newNode;
+            Count++;
+            
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
 
@@ -127,6 +169,34 @@
                 // we're currently on.
 
             // If we got this far, we didn't find anything to remove
+
+            bool check = false;
+            MyLinkedNode<T> currentNode = head;
+            if (head.Data.CompareTo(data) == 0)
+            {
+                head = head.Next;
+                Count--;
+                check = true;
+            }
+            else 
+            {
+                for (var i = 0; i < Count; i++)
+                {
+                    if (currentNode.Next.Data.CompareTo(data) == 0)
+                    {
+
+                        currentNode.Next = currentNode.Next.Next;
+                        Count--;
+                        check = true;
+                        break;
+                    }
+
+                    currentNode = currentNode.Next;
+                }
+            }
+            
+
+            return check;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
 
@@ -137,6 +207,9 @@
         {
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Implement the Clear method. You do NOT need a loop here!!!
+
+            head = null;
+            Count = 0;
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         }
     }
