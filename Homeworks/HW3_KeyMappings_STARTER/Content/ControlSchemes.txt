@@ -1,0 +1,16 @@
+﻿Arrows,Left,Left
+Arrows,Right,Right
+Arrows,Up,Up
+Arrows,Down,Down
+Both Hands,Left,A
+Both Hands,Right,D
+Both Hands,Up,Up
+Both Hands,Down,Down
+WASD,Up,W
+WASD,Left,A
+WASD,Down,S
+WASD,Right,D
+Inverted,Left,Right
+Inverted,Right,Left
+Inverted,Up,Down
+Inverted,Down,Up
