@@ -91,6 +91,8 @@ namespace SortedCollections
             }
 
             // TODO: Add a comment here about why allowing a set by index to any sorted collection would be a bad idea without also supporting removal?
+            // Allowing a set by index to any sorted collection would be a bad idea without also supporting removal becuase
+            // it could result in out of order data therefore not allowing a set ensures the data will be in order
         }
 
         /// <summary>
@@ -104,8 +106,10 @@ namespace SortedCollections
         {
             // TODO: Add comments to everything in this method
 
+            // Creates a new node using data
             MyLinkedNode<T> newNode = new MyLinkedNode<T>(newData);
 
+            // If the list is empty, add the node and increase count 
             if (head == null)
             {
                 head = newNode;
@@ -114,6 +118,7 @@ namespace SortedCollections
                 return;
             }
             
+            // If the new data is less than the head it puts it before the head
             if (newData.CompareTo(head.Data) < 0)
             {
                 newNode.Next = head;
@@ -122,6 +127,7 @@ namespace SortedCollections
                 return;
             }
 
+            // If the new data is more than the tail it puts it after the tail
             if (newData.CompareTo(tail.Data) >= 0)
             {
                 tail.Next = newNode;
@@ -131,9 +137,12 @@ namespace SortedCollections
             }
 
             // TODO: Make sure to explain why we need a loop here, but didn't in the MyLinkedList_v2 Add()
+
+            // The data must go in the middle so it has to be before the tail whose next is null
             MyLinkedNode<T> current = head;
             while(current.Next != null)
             {
+                // If the new data is less than the data after the current one, insert the data here 
                 if (newData.CompareTo(current.Next.Data) < 0)
                 {
                     newNode.Next = current.Next;
@@ -142,9 +151,11 @@ namespace SortedCollections
                     return;
                 }
 
+                // Moves onto the next node
                 current = current.Next;
             }
 
+            // Something messed up
             throw new InvalidOperationException("The sorted LL add is broken...");
 
         }

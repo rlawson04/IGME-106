@@ -24,7 +24,7 @@ namespace SortedCollections
             TestLinkedList(numbersLL_v1);
             TestLinkedList(numbersLL_v2);
 
-            /*
+            
             // Tests of the various sorted collections available with different data types:
             List<ISortedCollection<int>> sortedIntCollections = new List<ISortedCollection<int>>();
             sortedIntCollections.Add(new SortedList<int>());
@@ -59,7 +59,7 @@ namespace SortedCollections
             AddTimeTrials(rng, "\nSortedLL", sortedIntCollections[1].Add, sortedIntCollections[1].Clear, 1000);
             AddTimeTrials(rng, "\nSortedLL - Improved", sortedIntCollections[2].Add, sortedIntCollections[2].Clear, 1000);
             Console.WriteLine("\n" + "".PadLeft(40, '-'));
-            */
+            
         }
 
         /// <summary>
