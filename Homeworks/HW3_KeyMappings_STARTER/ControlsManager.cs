@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
+using System.Linq.Expressions;
 
 /// <summary>
 /// ONLY MODIFY WHERE MARKED WITH "TODO"
@@ -23,6 +24,8 @@ namespace HW3_KeyMappings
     // TODO: Step 1.1: Define a public delegate "ControlsUpdateDelegate" that matches the signature for the Snake's SetControls method
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    delegate void ControlsUpdateDelegate();
+
     /// <summary>
     /// Loads and stores possible directional control mappings for a game.
     /// Tracks the current control scheme and allows it to be changed based on custom buttons.
@@ -34,10 +37,16 @@ namespace HW3_KeyMappings
         // TODO: Step 1.2.a: Define a field "schemes" that is a Dictionary that scheme names to Dictionaries of Keys -> Direction
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+        Dictionary<string ,Dictionary<Keys, Direction>> schemes;
+
         // Rectangles to use as buttons to pick a control scheme
+
+        public Rectangle rect = new Rectangle();
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // TODO: Step 1.2.b: Define a Dictionary field, "buttons", that maps Rectangles to scheme names
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        Dictionary<Rectangle, string> buttons;
 
         // The previous mouse state for detecting clicks while updating
         private MouseState prevMState;
@@ -58,6 +67,9 @@ namespace HW3_KeyMappings
             // TODO: Step 2.1: Initialize the schemes and buttons data structures
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+            schemes = new Dictionary<string, Dictionary<Keys, Direction>>();
+            buttons = new Dictionary<Rectangle, string>();
+
             // Load the control schemes
             StreamReader input = null;
             try
@@ -76,6 +88,12 @@ namespace HW3_KeyMappings
                     // TODO: Step 2.2.a: If this is a new scheme, add new entry into the schemes dictionary
                     // TODO: Step 2.2.b: Add a mapping from control -> dir for the scheme for this line
                     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                    if (schemes.ContainsKey(scheme) == false)
+                    {
+                        schemes.Add(scheme, new Dictionary<Keys, Direction>());
+                    }
+                    schemes[scheme].Add(control, dir);
                 }
             }
             catch (Exception e)
@@ -143,6 +161,15 @@ namespace HW3_KeyMappings
                 // TODO: Step 3.1.a: Check each button rectangle in the buttons dictionary to see if it was the one clicked
                 // TODO: Step 3.1.b: If the button was clicked, look up the associated scheme name, update CurrentScheme, and trigger the OnControlsUpdate event with the associated controls dictionary.
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                foreach (Rectangle button in buttons.Keys)
+                {
+                    if (mState.Position == button.Location)
+                    {
+                        CurrentScheme = buttons[button];
+                        OnControlsUpdate();
+                    }
+                }
+
             }
             prevMState = mState;
         }
@@ -152,12 +179,20 @@ namespace HW3_KeyMappings
         /// </summary>
         private string SchemeInfo(string scheme)
         {
-            string result = scheme;
+
+            List<string> list = new List<string>();
+
+            list.Add(schemes.Keys.ToString());
+
+            // Result scheme,  -direction: key
+            string result = scheme + $"\n-{list[1]}: {list[0]} \n-{list[3]}: {list[2]} \n-{list[5]}: {list[4]} \n-{list[7]}: {list[6]}";
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Step 3.2: Build the result string for display on the buttons by
             // by adding each key --> direction mapping (but in the correct format to
             // match the sample button text)
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+            
             return result;
         }
 

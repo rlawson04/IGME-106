@@ -99,7 +99,9 @@ namespace HW3_KeyMappings
 
             // Save the keyboard state for next time
             prevKBState = kbState;
-
+            ControlsManager controlsManager = controlsMgr;
+            controlsMgr.Update();
+            controlsMgr.DrawButtons();
             base.Update(gameTime);
         }
 
@@ -114,7 +116,7 @@ namespace HW3_KeyMappings
             // IMPORTANT! - Remember that you'll need to use ShapeBatch.Begin/End or
             // _spriteBatch.Begin/End appropriately around different types of drawing
             // methods. ShapeBatch & _spriteBatch can NOT both be active at the same time!
-
+            
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Step 4.3.a: Always draw the snake in the background
             // TODO: Step 4.3.b: If not playing (the snake isn't alive):
