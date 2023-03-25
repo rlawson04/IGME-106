@@ -61,6 +61,7 @@ namespace HW3_KeyMappings
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Step 4.1: Subscribe the snake's SetControls method to the controls manager's OnControlsUpdate event
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            controlsMgr.OnControlsUpdate += snake.SetControls;
 
             base.Initialize();
         }
@@ -97,11 +98,27 @@ namespace HW3_KeyMappings
             // TODO: Step 4.2.c: Otherwise, tell the controls manager to check for updates
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+            // When the snake is alive, update it
+            if (snake.IsAlive)
+            {
+                snake.Update(gameTime);
+            }
+
+            // If the game hasn't started check if the player has pressed space and chosen a scheme
+            else if (kbState.IsKeyDown(Keys.Space) && prevKBState.IsKeyUp(Keys.Space) && controlsMgr.CurrentScheme != null) 
+            {
+                snake.Reset();
+            }
+
+            // Check for the player choice
+            else
+            {
+                controlsMgr.Update();
+            }
+
             // Save the keyboard state for next time
             prevKBState = kbState;
-            ControlsManager controlsManager = controlsMgr;
-            controlsMgr.Update();
-            controlsMgr.DrawButtons();
+           
             base.Update(gameTime);
         }
 
@@ -123,6 +140,9 @@ namespace HW3_KeyMappings
             //  - Draw the controls selection buttons (and then their text) & instructions
             //  - If the controls manager has an active control scheme, also draw the instructions to start game play.
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+            
+
             base.Draw(gameTime);
         }
     }

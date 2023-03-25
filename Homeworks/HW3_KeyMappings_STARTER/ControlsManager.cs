@@ -24,7 +24,7 @@ namespace HW3_KeyMappings
     // TODO: Step 1.1: Define a public delegate "ControlsUpdateDelegate" that matches the signature for the Snake's SetControls method
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    delegate void ControlsUpdateDelegate();
+    public delegate void ControlsUpdateDelegate();
 
     /// <summary>
     /// Loads and stores possible directional control mappings for a game.
@@ -37,7 +37,7 @@ namespace HW3_KeyMappings
         // TODO: Step 1.2.a: Define a field "schemes" that is a Dictionary that scheme names to Dictionaries of Keys -> Direction
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        Dictionary<string ,Dictionary<Keys, Direction>> schemes;
+        public Dictionary<string ,Dictionary<Keys, Direction>> schemes;
 
         // Rectangles to use as buttons to pick a control scheme
 
@@ -46,7 +46,7 @@ namespace HW3_KeyMappings
         // TODO: Step 1.2.b: Define a Dictionary field, "buttons", that maps Rectangles to scheme names
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        Dictionary<Rectangle, string> buttons;
+        public Dictionary<Rectangle, string> buttons;
 
         // The previous mouse state for detecting clicks while updating
         private MouseState prevMState;
