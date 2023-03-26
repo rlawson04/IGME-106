@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// ONLY MODIFY WHERE MARKED WITH "TODO"
@@ -24,8 +25,9 @@ namespace HW3_KeyMappings
     // TODO: Step 1.1: Define a public delegate "ControlsUpdateDelegate" that matches the signature for the Snake's SetControls method
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    public delegate void ControlsUpdateDelegate();
-
+    // Delegate for OnControlsUpdate event
+    public delegate void  ControlsUpdateDelegate(Dictionary<Keys, Direction> dict);
+   
     /// <summary>
     /// Loads and stores possible directional control mappings for a game.
     /// Tracks the current control scheme and allows it to be changed based on custom buttons.
@@ -37,15 +39,18 @@ namespace HW3_KeyMappings
         // TODO: Step 1.2.a: Define a field "schemes" that is a Dictionary that scheme names to Dictionaries of Keys -> Direction
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+        // Dictionary for schemes holding another dictionary for the keys and directions
         public Dictionary<string ,Dictionary<Keys, Direction>> schemes;
 
-        // Rectangles to use as buttons to pick a control scheme
 
+        // Rectangles to use as buttons to pick a control scheme
         public Rectangle rect = new Rectangle();
+
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // TODO: Step 1.2.b: Define a Dictionary field, "buttons", that maps Rectangles to scheme names
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+        // Dictionary to hold the buttons and scheme names
         public Dictionary<Rectangle, string> buttons;
 
         // The previous mouse state for detecting clicks while updating
@@ -66,7 +71,8 @@ namespace HW3_KeyMappings
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Step 2.1: Initialize the schemes and buttons data structures
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+            
+            // Initializes the dictionaries
             schemes = new Dictionary<string, Dictionary<Keys, Direction>>();
             buttons = new Dictionary<Rectangle, string>();
 
@@ -89,10 +95,13 @@ namespace HW3_KeyMappings
                     // TODO: Step 2.2.b: Add a mapping from control -> dir for the scheme for this line
                     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+                    // If the scheme is not already contained it adds it to the scheme list
                     if (schemes.ContainsKey(scheme) == false)
                     {
                         schemes.Add(scheme, new Dictionary<Keys, Direction>());
                     }
+
+                    // Adds the corrosponding keys and directions to the nested dictionary
                     schemes[scheme].Add(control, dir);
                 }
             }
@@ -161,12 +170,15 @@ namespace HW3_KeyMappings
                 // TODO: Step 3.1.a: Check each button rectangle in the buttons dictionary to see if it was the one clicked
                 // TODO: Step 3.1.b: If the button was clicked, look up the associated scheme name, update CurrentScheme, and trigger the OnControlsUpdate event with the associated controls dictionary.
                 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                
+                // Checks when the mouse is in between the bounds of the rectangles and updates the scheme
                 foreach (Rectangle button in buttons.Keys)
                 {
-                    if (mState.Position == button.Location)
+                    if (mState.X > button.X && mState.X < button.X + button.Width &&
+                        mState.Y > button.Y && mState.Y < button.Y + button.Height)
                     {
-                        CurrentScheme = buttons[button];
-                        OnControlsUpdate();
+                       CurrentScheme = buttons[button];
+                       OnControlsUpdate(schemes[CurrentScheme]);
                     }
                 }
 
@@ -180,19 +192,20 @@ namespace HW3_KeyMappings
         private string SchemeInfo(string scheme)
         {
 
-            List<string> list = new List<string>();
 
-            list.Add(schemes.Keys.ToString());
 
-            // Result scheme,  -direction: key
-            string result = scheme + $"\n-{list[1]}: {list[0]} \n-{list[3]}: {list[2]} \n-{list[5]}: {list[4]} \n-{list[7]}: {list[6]}";
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Step 3.2: Build the result string for display on the buttons by
             // by adding each key --> direction mapping (but in the correct format to
             // match the sample button text)
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
             
+            // Creates the string with the scheme name
+            string result = scheme + "\n- ";
+
+            // Adds the information from the scheme list
+            result += string.Join("\n- ", schemes[scheme]);
+
             return result;
         }
 

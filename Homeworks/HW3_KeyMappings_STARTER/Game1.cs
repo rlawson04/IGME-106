@@ -61,6 +61,8 @@ namespace HW3_KeyMappings
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             // TODO: Step 4.1: Subscribe the snake's SetControls method to the controls manager's OnControlsUpdate event
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            
+            // Subscribing to the OnControlsUpdate event
             controlsMgr.OnControlsUpdate += snake.SetControls;
 
             base.Initialize();
@@ -141,7 +143,31 @@ namespace HW3_KeyMappings
             //  - If the controls manager has an active control scheme, also draw the instructions to start game play.
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+            // Startch spritebatch and shapebatch
+            _spriteBatch.Begin();
+
+            ShapeBatch.Begin(GraphicsDevice);
+
+            // Always have snake drawn
+            snake.Draw();
+
+            // Show the buttons when the snake is not alive
+            if (snake.IsAlive == false)
+            {
+                controlsMgr.DrawButtons();
+                controlsMgr.DrawButtonText(_spriteBatch, buttonFont);
+            }
+
+            // Show the instructions when the snake is dead and no controls have been selected
+            if (controlsMgr.CurrentScheme != null && snake.IsAlive == false) 
+            { 
+                _spriteBatch.DrawString(titleFont, "Press SPACE to begin", new Vector2(50, 200), Color.Blue); 
+            }
             
+            // End shape and sprite batches
+            ShapeBatch.End();
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
