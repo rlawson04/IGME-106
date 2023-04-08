@@ -34,8 +34,18 @@ namespace HW3_LinkedLists
         {
             get
             {
-                // IMPLEMENT THIS
-                return null; // TMP so starter code compiles
+                // Throws exception for invalid index
+                if(index>=Count)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+
+                Card current = head;
+                for(int i = 0; i < index; i++)
+                {
+                    current = current.Next;
+                }
+                return current; 
             }
 
             set
@@ -50,7 +60,39 @@ namespace HW3_LinkedLists
         /// </summary>
         public void Add(CardSuit suit, CardRank rank)
         {
-            // IMPLEMENT THIS
+            // Creates a new node for the card given the passed information
+            Card newNode = new Card(suit, rank);
+
+            // Sets the next and previous to null
+            newNode.Next = null;
+            newNode.Previous = null;
+
+            // Check that there is an element in the list
+            if (head == null)
+            {
+                head = newNode;
+
+                // Increase count
+                count++;
+            }
+            // If not, use a temp card to loop through and find the end,
+            // then add the card to the end of the list
+            else
+            {
+                Card temp = new Card(suit, rank);
+                temp = head;
+                while (temp.Next != null)
+                {
+                    temp = temp.Next;
+                }
+
+                // Set temp next to new node and new node's previous to head
+                temp.Next = newNode;
+                newNode.Previous = head;
+
+                // Increase count
+                count++;
+            }
         }
 
 
@@ -61,7 +103,12 @@ namespace HW3_LinkedLists
         /// </summary>
         public void Print()
         {
-            // IMPLEMENT THIS
+            for(int i = 0; i < Count; i++)
+            {
+                Console.WriteLine(head);
+                head = head.Next;
+            }
+            
         }
 
         /// <summary>
