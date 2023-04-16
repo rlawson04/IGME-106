@@ -139,7 +139,15 @@ namespace SortedCollections
         /// </summary>
         private void Add(T newData, MySearchTreeNode<T> node)
         {
-            // TODO: Implement this!
+            MySearchTreeNode<T> currentNode = new MySearchTreeNode<T>(newData); 
+            if (Count = = 0)
+            {
+                currentNode = root;
+            }
+            else
+            {
+                Add(currentNode.Data);
+            }
         }
 
         /// <summary>
