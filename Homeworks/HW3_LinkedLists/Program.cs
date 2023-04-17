@@ -28,13 +28,18 @@ namespace HW3_LinkedLists
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Welcome to the Linked List homework!\n");
 
-            
+            //Testing the Add method 
             myDeck.Add(CardSuit.Clubs, CardRank.Ace);
             myDeck.Add(CardSuit.Clubs, CardRank.Two);
             myDeck.Add(CardSuit.Clubs, CardRank.Three);
             myDeck.Add(CardSuit.Clubs, CardRank.Four);
             myDeck.Add(CardSuit.Clubs, CardRank.Five);
             myDeck.Print();
+            Console.WriteLine();
+            myDeck.PrintReversed();
+            myDeck.Clear();
+            Console.WriteLine(myDeck.Count);
+
 
             /*
             // Main user loop

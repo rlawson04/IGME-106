@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -71,7 +72,7 @@ namespace HW3_LinkedLists
             if (head == null)
             {
                 head = newNode;
-
+                tail = newNode;
                 // Increase count
                 count++;
             }
@@ -88,7 +89,8 @@ namespace HW3_LinkedLists
 
                 // Set temp next to new node and new node's previous to head
                 temp.Next = newNode;
-                newNode.Previous = head;
+                tail = newNode;
+                newNode.Previous = temp;
 
                 // Increase count
                 count++;
@@ -118,7 +120,11 @@ namespace HW3_LinkedLists
         /// </summary>
         public void PrintReversed()
         {
-            // IMPLEMENT THIS
+            for (int  i = 0; i < Count; ++i)
+            {
+                Console.WriteLine(tail);
+                tail = tail.Previous;
+            }
         }
 
         /// <summary>
@@ -127,7 +133,9 @@ namespace HW3_LinkedLists
         /// </summary>
         public void Clear()
         {
-            // IMPLEMENT THIS
+            head = null;
+            tail = null;
+            count = 0;
         }
 
         /// <summary>
@@ -145,7 +153,10 @@ namespace HW3_LinkedLists
         /// </summary>
         public List<Deck> DealPlayerHands(int playerCount)
         {
-            // IMPLEMENT THIS
+            for (int i = 0; i < playerCount; i++)
+            { 
+                Deck deck = new Deck();
+            }
             return null; // TMP so starter code compiles
         }
 
