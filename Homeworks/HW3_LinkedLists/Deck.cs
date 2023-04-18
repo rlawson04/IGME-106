@@ -50,22 +50,10 @@ namespace HW3_LinkedLists
                 return current; 
             }
 
+            // Set was not necessary 
             set
             {
-                // Throws exception for invalid index
-                if (index >= Count)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-
-                Card current = head;
-                for (int i = 0; i < index; i++)
-                {
-                    current = current.Next;
-                }
-
-                current.Previous = value;
-                
+              
             }
         }
 
@@ -172,6 +160,7 @@ namespace HW3_LinkedLists
             Random rng = new Random();
             List<Deck> Decks = new List<Deck>();
 
+            // Make a deck for each player with the same number of cards
             for (int i = 0; i < playerCount; i++)
             { 
                 Deck deck = new Deck();
@@ -202,7 +191,40 @@ namespace HW3_LinkedLists
         /// </summary>
         public void Move(int cardsToMove, int targetIndex)
         {
+            // Two variables to keep track of the start and end
+            Card start = tail;
+            Card end = tail;
+
+            // Two more to set the new tail and the previous
+            Card after = this[targetIndex];
+            Card before = this[targetIndex].Previous;
             
+            // Moves to the index
+            for (int i = 0; i < cardsToMove; i++)
+            {
+                if (end != null && end.Previous != null)
+                {
+                    start = end.Previous;
+                }
+            }
+
+            // Sets the new tail
+            tail = start.Previous;
+
+            // Make sure before is not null
+            if (before == null)
+            {
+                start.Previous = null;
+                head = start;
+            }
+            else
+            {
+                before.Next = start;
+                start.Previous = before;
+            }
+            
+            end.Next = after;
+            after.Previous = end;
         }
     }
 }

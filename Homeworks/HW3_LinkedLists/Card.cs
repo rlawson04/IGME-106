@@ -14,10 +14,10 @@ namespace HW3_LinkedLists
     // happening.
     enum CardSuit
     {
-       /* Temp limit to just clubs for testing 
+       
         Hearts,
         Spades,
-        Diamonds,*/
+        Diamonds,
         Clubs
     }
 
