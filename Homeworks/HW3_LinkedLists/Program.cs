@@ -28,20 +28,9 @@ namespace HW3_LinkedLists
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Welcome to the Linked List homework!\n");
 
-            //Testing the Add method 
-            myDeck.Add(CardSuit.Clubs, CardRank.Ace);
-            myDeck.Add(CardSuit.Clubs, CardRank.Two);
-            myDeck.Add(CardSuit.Clubs, CardRank.Three);
-            myDeck.Add(CardSuit.Clubs, CardRank.Four);
-            myDeck.Add(CardSuit.Clubs, CardRank.Five);
-            myDeck.Print();
-            Console.WriteLine();
-            myDeck.PrintReversed();
-            myDeck.Clear();
-            Console.WriteLine(myDeck.Count);
+            
 
-
-            /*
+            
             // Main user loop
             bool isRunning = true;
             while (isRunning)
@@ -121,6 +110,7 @@ namespace HW3_LinkedLists
                                     Console.WriteLine("Moving the last {0} cards to the front", cards);
                                     myDeck.Move(cards, 0);
                                     myDeck.Print();
+                                    Console.WriteLine();
 
                                     Console.WriteLine("Moving the last {0} cards to index 1", cards);
                                     myDeck.Move(cards, 1);
@@ -191,7 +181,7 @@ namespace HW3_LinkedLists
                     Console.WriteLine("Error handling command \"" + input + "\" - " + e.Message);
                 }
             }
-            */
+            
         }
     }
 }

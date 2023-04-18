@@ -46,12 +46,26 @@ namespace HW3_LinkedLists
                 {
                     current = current.Next;
                 }
+
                 return current; 
             }
 
             set
             {
-                // IMPLEMENT THIS
+                // Throws exception for invalid index
+                if (index >= Count)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+
+                Card current = head;
+                for (int i = 0; i < index; i++)
+                {
+                    current = current.Next;
+                }
+
+                current.Previous = value;
+                
             }
         }
 
@@ -89,8 +103,8 @@ namespace HW3_LinkedLists
 
                 // Set temp next to new node and new node's previous to head
                 temp.Next = newNode;
+                newNode.Previous = tail;
                 tail = newNode;
-                newNode.Previous = temp;
 
                 // Increase count
                 count++;
@@ -105,10 +119,11 @@ namespace HW3_LinkedLists
         /// </summary>
         public void Print()
         {
-            for(int i = 0; i < Count; i++)
+            Card temp = head;
+            for (int i = 0; i < Count; i++)
             {
-                Console.WriteLine(head);
-                head = head.Next;
+                Console.WriteLine(temp);
+                temp = temp.Next;
             }
             
         }
@@ -120,10 +135,11 @@ namespace HW3_LinkedLists
         /// </summary>
         public void PrintReversed()
         {
+            Card temp = tail;
             for (int  i = 0; i < Count; ++i)
             {
-                Console.WriteLine(tail);
-                tail = tail.Previous;
+                Console.WriteLine(temp);
+                temp = temp.Previous;
             }
         }
 
@@ -153,11 +169,22 @@ namespace HW3_LinkedLists
         /// </summary>
         public List<Deck> DealPlayerHands(int playerCount)
         {
+            Random rng = new Random();
+            List<Deck> Decks = new List<Deck>();
+
             for (int i = 0; i < playerCount; i++)
             { 
                 Deck deck = new Deck();
+
+                for (int j = 0; j < Count/playerCount; j++)
+                {
+                    deck.Add(this[rng.Next(0, Count)].Suit, this[rng.Next(0, Count)].Rank);
+                }
+
+                Decks.Add(deck);
             }
-            return null; // TMP so starter code compiles
+
+            return Decks; 
         }
 
         /// <summary>
@@ -175,7 +202,7 @@ namespace HW3_LinkedLists
         /// </summary>
         public void Move(int cardsToMove, int targetIndex)
         {
-            // IMPLEMENT THIS
+            
         }
     }
 }
