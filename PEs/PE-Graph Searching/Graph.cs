@@ -120,7 +120,7 @@ namespace PE_Graph_Searching
                 Console.WriteLine("Starting at Vertex " + name);
                 stack.Push(vertices[name]);
 
-                vertices[name].Visited = true;
+                vertices[name].Visited = false;
 
                 // Loops through stack 
                 while(stack.Count > 0)
@@ -144,5 +144,56 @@ namespace PE_Graph_Searching
                 }
             }
         }
+
+
+        public void ShortestPath(Vertex startingVertex)
+        {
+            // Reset all algorithm related vertex data
+            foreach(Vertex v in verticesList)
+            {
+                v.Reset();
+            }
+            
+            // The source vertex becomes the first "current" node
+            startingVertex.Permanent = true;
+            startingVertex.Distance = 0;
+
+            // Sets the staring vertex 
+            Vertex currentVertex = startingVertex;
+           
+            // Setting the distances for the vertexes
+            while (NonPermanent())
+            {
+                Vertex neighbors = GetUnvisitedNeighbor(currentVertex);
+                while (neighbors != null)
+                {
+                    neighbors.Distance = 1;
+                    neighbors.Permanent = true;
+                }
+                   
+            }
+
+
+        }
+
+        /// <summary>
+        /// Checks the list of vertices for non permanent members
+        /// </summary>
+        /// <returns> true if there are non permanent members, else false </returns>
+        private bool NonPermanent()
+        {
+            // Checks all vertices
+            foreach(Vertex v in verticesList)
+            {
+                if (v.Permanent == false)
+                {
+                    return true;
+                }    
+            }
+
+            // Returns false when all vertices are permanent
+            return false;
+        }
+       
     }
 }

@@ -21,6 +21,10 @@
 
             myGraph.DepthFirst("Exit");
             Console.WriteLine();
+
+            // Test Dijkstra's
+            Vertex startingVertex = new Vertex("Billiards Room");
+            myGraph.ShortestPath(startingVertex);
         }
     }
 }
