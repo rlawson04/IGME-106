@@ -161,17 +161,22 @@ namespace PE_Graph_Searching
             // Sets the staring vertex 
             Vertex currentVertex = startingVertex;
            
-            // Setting the distances for the vertexes
-            while (NonPermanent())
+            // Setting the distances for the vertices   
+            for (int i = 0; i< verticesList.Count; i++)
             {
                 Vertex neighbors = GetUnvisitedNeighbor(currentVertex);
                 while (neighbors != null)
                 {
                     neighbors.Distance = 1;
                     neighbors.Permanent = true;
+                    currentVertex = verticesList.ElementAt(i);
+                    neighbors = GetUnvisitedNeighbor(currentVertex);
                 }
-                   
+                
             }
+            DepthFirst(startingVertex.Name);
+                
+            
 
 
         }
