@@ -91,6 +91,25 @@ namespace HW5_QuadTrees
             // Once a division occurs, game objects can still be added to this quad’s list since 
             // the object might not fit into any of the subdivisions.
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+            // Check that the game object fits inside the Quad Tree Node Rectangle
+            if(rect.Contains(gameObj.Rectangle))
+            {
+                // Adds the object to the list
+                objects.Add(gameObj);
+
+                // Call a divide if there are enough objects in the list
+                if (objects.Count > MaxObjectsBeforeSubdivide)
+                {
+                    Divide();
+                }
+
+
+            }
+            else
+            {
+                return;
+            }
         }
 
         /// <summary>
