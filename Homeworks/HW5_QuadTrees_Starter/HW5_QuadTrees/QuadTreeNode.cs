@@ -95,11 +95,14 @@ namespace HW5_QuadTrees
             // Check that the game object fits inside the Quad Tree Node Rectangle
             if(rect.Contains(gameObj.Rectangle))
             {
+                
                 // Adds the object to the list
                 objects.Add(gameObj);
+                
+
 
                 // Call a divide if there are enough objects in the list
-                if (objects.Count > MaxObjectsBeforeSubdivide)
+                if (objects.Count == 3)
                 {
                     Divide();
                 }
@@ -126,6 +129,31 @@ namespace HW5_QuadTrees
             // Move objects from this node down into the subdivision they fit into 
             // (leave objects that cross boundaries here)
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            QuadTreeNode newNode1 = new QuadTreeNode(rect.X, rect.Y, rect.Width/4, rect.Height/4);
+            QuadTreeNode newNode2 = new QuadTreeNode(rect.X + rect.Width/4, rect.Y, rect.Width / 4, rect.Height / 4);
+            QuadTreeNode newNode3 = new QuadTreeNode(rect.X, rect.Y + rect.Height/4, rect.Width / 4, rect.Height / 4);
+            QuadTreeNode newNode4 = new QuadTreeNode(rect.X + rect.Width / 4, rect.Y + rect.Height / 4, rect.Width / 4, rect.Height / 4);
+
+            divisions = new QuadTreeNode[4];
+            divisions[0] = newNode1;
+            divisions[1] = newNode2;
+            divisions[2] = newNode3;
+            divisions[3] = newNode4;
+
+            foreach (QuadTreeNode node in divisions)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (node.Rectangle.Contains(objects[i].Rectangle))
+                    {
+                        node.objects.Add(objects[i]);
+                        
+                    }
+                    
+                }
+               
+            }
+            
         }
 
         /// <summary>
@@ -144,6 +172,9 @@ namespace HW5_QuadTrees
             // Then iteratively get all rectangles from each division. 
             // Add each one to this list of rectangles. 
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+            rects.Add(rect);
 
             return rects;
         }
