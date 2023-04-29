@@ -134,26 +134,32 @@ namespace HW5_QuadTrees
             QuadTreeNode newNode3 = new QuadTreeNode(rect.X, rect.Y + rect.Height/4, rect.Width / 4, rect.Height / 4);
             QuadTreeNode newNode4 = new QuadTreeNode(rect.X + rect.Width / 4, rect.Y + rect.Height / 4, rect.Width / 4, rect.Height / 4);
 
+            // Array of 4 Quad tree nodes
             divisions = new QuadTreeNode[4];
             divisions[0] = newNode1;
             divisions[1] = newNode2;
             divisions[2] = newNode3;
             divisions[3] = newNode4;
 
+            // Moving objects fully contained by the subdivisions
             foreach (QuadTreeNode node in divisions)
             {
-                for (int i = 0; i < 3; i++)
+                if (node.Rectangle.Contains(objects[0].Rectangle))
                 {
-                    if (node.Rectangle.Contains(objects[i].Rectangle))
-                    {
-                        node.objects.Add(objects[i]);
-                        
-                    }
-                    
+                    node.objects.Add(objects[0]);
+                    objects.Remove(objects[0]);
                 }
-               
+                if (node.Rectangle.Contains(objects[1].Rectangle))
+                {
+                    node.objects.Add(objects[1]);
+                    objects.Remove(objects[1]);
+                }
+                if (node.Rectangle.Contains(objects[2].Rectangle))
+                {
+                    node.objects.Add(objects[2]);
+                    objects.Remove(objects[2]);
+                }
             }
-            
         }
 
         /// <summary>
@@ -173,8 +179,19 @@ namespace HW5_QuadTrees
             // Add each one to this list of rectangles. 
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+            if(rects.Count == 0)
+            {
+                rects.Add(rect);
+            }
+            if (objects.Count > 0)
+            {
+                for(int i  = 0; i < objects.Count; i++)
+                {
+                    rects.Add(objects[i].Rectangle);
+                }
+            }
 
-            rects.Add(rect);
+            //GetAllRectangles();
 
             return rects;
         }
