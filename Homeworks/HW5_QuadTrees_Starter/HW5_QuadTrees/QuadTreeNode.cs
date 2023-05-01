@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 // DO NOT MODIFY EXCEPT WHERE MARKED WITH "TODO"
@@ -96,19 +96,29 @@ namespace HW5_QuadTrees
             if(rect.Contains(gameObj.Rectangle))
             {
                 
-                // Adds the object to the list
-                objects.Add(gameObj);
-                
-
-
-                // Call a divide if there are enough objects in the list
-                if (objects.Count == 3)
+                // Adds the object to the list if the count is lower than 3 and no divide has been called
+                if(GameObjects.Count < 3 && divisions != null)
                 {
+                    GameObjects.Add(gameObj);
+                }
+                
+                // Call a divide if there are enough objects in the list and only call it once
+                if (GameObjects.Count == 3 && divisions == null)
+                {
+                    // Checks and adds the objects to the divisions if they fit
                     Divide();
+
+                    // Otherwise adds them to this quad
+                    foreach (GameObject gObj in GameObjects)
+                    {
+                        objects.Add(gObj);
+                    }
                 }
 
-
+                
+                
             }
+            // If it isn't contained, nothing happens
             else
             {
                 return;
@@ -144,21 +154,18 @@ namespace HW5_QuadTrees
             // Moving objects fully contained by the subdivisions
             foreach (QuadTreeNode node in divisions)
             {
-                if (node.Rectangle.Contains(objects[0].Rectangle))
+                for (int i = 0; i < 3; i++)
                 {
-                    node.objects.Add(objects[0]);
-                    objects.Remove(objects[0]);
-                }
-                if (node.Rectangle.Contains(objects[1].Rectangle))
-                {
-                    node.objects.Add(objects[1]);
-                    objects.Remove(objects[1]);
-                }
-                if (node.Rectangle.Contains(objects[2].Rectangle))
-                {
-                    node.objects.Add(objects[2]);
-                    objects.Remove(objects[2]);
-                }
+                    if (i >= GameObjects.Count)
+                    {
+                        return;
+                    }
+                    else if (node.Rectangle.Contains(GameObjects[i].Rectangle))
+                    {
+                        node.objects.Add(GameObjects[i]);
+                        GameObjects.Remove(GameObjects[i]);
+                    }
+                }                
             }
         }
 
@@ -179,19 +186,24 @@ namespace HW5_QuadTrees
             // Add each one to this list of rectangles. 
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-            if(rects.Count == 0)
+            
+            // Add this nodes rectangle to the list
+            rects.Add(rect);
+
+            // Adds all the objects rectangles from the current level of the tree
+            foreach(GameObject obj in objects)
             {
-                rects.Add(rect);
-            }
-            if (objects.Count > 0)
-            {
-                for(int i  = 0; i < objects.Count; i++)
-                {
-                    rects.Add(objects[i].Rectangle);
-                }
+                rects.Add(obj.Rectangle);
             }
 
-            //GetAllRectangles();
+            // Recursively call the method to get all the divisions rectangles
+            if (divisions != null)
+            {
+                foreach (QuadTreeNode node in divisions)
+                {
+                    node.GetAllRectangles();
+                }
+            }
 
             return rects;
         }
@@ -211,6 +223,24 @@ namespace HW5_QuadTrees
             // And if so, then call this again
             // If I don't have children or none of my children has the rectangle, it must be me
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+            QuadTreeNode Node = new QuadTreeNode(rect.X, rect.Y, rect.Width, rect.Height);
+
+            // Recursively call the method to get all the divisions containing quad
+            if (divisions != null)
+            {
+                foreach (QuadTreeNode node in divisions)
+                {
+                    node.GetContainingQuad(rect);
+                }
+            }
+
+            // If this quad contains the rectangle, return the quad
+            if (this.rect.Contains(rect))
+            {
+                return Node;
+            }
 
             // Return null if this quad doesn't completely contain
             // the rectangle that was passed in
