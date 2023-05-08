@@ -17,7 +17,7 @@ namespace Exam_3
         private Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>();
 
         // Unique vertex names that are visited
-        private List<string> visited = new List<string>();
+        private List<string> visited;
 
         // Random object for the guard method 
         private Random random = new Random();
@@ -49,7 +49,7 @@ namespace Exam_3
             {
                 lineOfText = sr.ReadLine();
 
-                if (lineOfText != null)
+                if (lineOfText == null)
                 {
                     break;
                 }
@@ -60,8 +60,7 @@ namespace Exam_3
                 // Save the first vertex in the line as a variable to use as the key
                 string vertexKey = splitData[0];
 
-                // Clears the list of visited vertices so multiple lines don't add up
-                visited.Clear();
+                visited = new List<string>();
 
                 // Adds visited vertices to the list
                 for (int i = 1; i < splitData.Length; i++)
@@ -82,13 +81,68 @@ namespace Exam_3
         // Methods
 
         /// <summary>
-        /// Returns whether the guard visited all the vertices
+        /// Returns whether the guard visited all the vertices and if the starting vertex is valid
         /// </summary>
-        /// <param name="startingVertex"></param>
+        /// <param name="startingVertex"> the vertex where the guard will begin walking from </param>
         /// <returns></returns>
         public bool Guard(string startingVertex)
         {
+            // Check that the starting vertex is in the list 
+            if (adjacencyList.ContainsKey(startingVertex) == false)
+            {
+                Console.WriteLine(startingVertex + " is not a valid vertex. Try again");
+                return false;
+            }
 
+            // Condition for exiting loop
+            bool allVisited = false;
+
+            // Initial message
+            Console.WriteLine("Guard starts at vertex: " + startingVertex);
+
+            // Keep track of the current vertex
+            string currentVertex = startingVertex;
+
+            // Clears the visited list
+            visited.Clear();
+
+            // Create a loop that runs until all vertices have been visited
+            while (allVisited == false)
+            {
+                // if the guard visits a vertex and it's not in the visited list, add the vertex to the list
+                if (visited.Contains(currentVertex) == false)
+                {
+                    visited.Add(currentVertex);
+
+                    // Write out the name of the vertex visited
+                    Console.WriteLine($"The guard moves to vertex {currentVertex} for the first time! ****");
+
+                    // When visited has the same number of elements as adjacency list then exit the loop
+                    if (visited.Count == adjacencyList.Count) 
+                    {
+                        Console.WriteLine("\nAll Vertices have been visited!");
+
+                        allVisited = true;
+                        break;
+                    }
+                }
+                
+                // If the guard moves to a vertex that is already in the list print message
+                if (visited.Contains(currentVertex))
+                {
+                    Console.WriteLine($"The guard moves to vertex {currentVertex} again.");
+                }
+
+                // based on the vertex the guard is ar, randomly select one of the connected vertices to visit
+                int nextInt = random.Next(0, adjacencyList[currentVertex].Count);
+
+                string nextVertex = adjacencyList[currentVertex][nextInt];
+
+                if (adjacencyList[currentVertex].Contains(nextVertex))
+                {
+                    currentVertex = nextVertex;
+                }
+            }
             return true;
         }
     }
