@@ -32,6 +32,10 @@ namespace Exam_3
 
         // Constructors
 
+        /// <summary>
+        /// Parameterized constructor that uses the relative file path to create the graph
+        /// </summary>
+        /// <param name="relativeFile"> a string relating to the relative file path of the text document </param>
         public Graph(string relativeFile) 
         { 
             // NOTE: All exceptions are handled in main
@@ -76,5 +80,16 @@ namespace Exam_3
 
 
         // Methods
+
+        /// <summary>
+        /// Returns whether the guard visited all the vertices
+        /// </summary>
+        /// <param name="startingVertex"></param>
+        /// <returns></returns>
+        public bool Guard(string startingVertex)
+        {
+
+            return true;
+        }
     }
 }
