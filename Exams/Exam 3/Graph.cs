@@ -143,6 +143,7 @@ namespace Exam_3
                     currentVertex = nextVertex;
                 }
             }
+
             return true;
         }
     }
